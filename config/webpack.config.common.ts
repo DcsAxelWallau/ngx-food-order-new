@@ -60,6 +60,7 @@ module.exports = {
   entry: {
     polyfills: './src/polyfills.ts',
     main: './src/main.ts',
+    styles: './src/styles/application.scss',
   },
 
   output: {
@@ -159,5 +160,7 @@ module.exports = {
       tsConfigPath: 'tsconfig.json',
       sourceMap: true,
     }),
+
+    extractSASS,
   ],
 };
