@@ -35,10 +35,10 @@ describe('testing a component as class', () => {
 
     it('has a working observable selector', (done: any) => {
       subject.greeting$.subscribe(data => {
-        expect(data).toEqual('42');
+        expect(data).toEqual('43');
         done();
       });
-      greeting$.next('42');
+      greeting$.next('43');
     });
   });
 });
