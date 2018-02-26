@@ -4,13 +4,20 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { CommonsChunkPlugin } = require('webpack').optimize;
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
-const { NoEmitOnErrorsPlugin, EnvironmentPlugin, NormalModuleReplacementPlugin } = require('webpack');
+const {
+  NoEmitOnErrorsPlugin,
+  EnvironmentPlugin,
+  NormalModuleReplacementPlugin,
+} = require('webpack');
+const rxPaths = require('rxjs/_esm5/path-mapping');
 
 const root = process.cwd();
 const TS_VERSION = require('typescript').version;
 const APP_ENV = process.env.APP_ENV || 'development';
+const extractSASS = new ExtractTextPlugin('[name]-sass.css');
 
 const Environment = require(path.resolve(root, 'src', 'environments', APP_ENV)).default;
 const environment = new Environment();
@@ -26,21 +33,22 @@ const cssLoader = [
   {
     loader: 'postcss-loader',
     options: {
+      sourceMap: true,
       plugins: () => {
         return [require('autoprefixer')];
       },
     },
   },
-  {
-    loader: 'sass-loader',
-  },
+  { loader: 'sass-loader', options: { sourceMap: true } },
 ];
 
 module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
-    mainFields: ['es2015', 'module', 'main'],
+    // readd when targeting es2015+ builds
+    // mainFields: ['es2015', 'module', 'main'],
     alias: {
+      ...rxPaths(),
       'transit-immutable-js': path.resolve(root, 'config', 'resource-override.js'),
       'date-fns': path.resolve(root, 'config', 'resource-override.js'),
       // tslint:disable-next-line:object-literal-key-quotes
@@ -71,6 +79,10 @@ module.exports = {
           },
         ],
       },
+      { test: /\.json$/, use: 'json-loader' },
+      { test: /\.(jpg|png|gif)$/, use: 'file-loader' },
+      { test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/, use: 'file-loader' },
+      { test: /\.css$/, use: 'raw-loader' },
       {
         test: /\.html$/,
         loader: 'raw-loader',
@@ -78,18 +90,10 @@ module.exports = {
       },
       {
         test: /\.(scss)$/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'cache-loader',
-          },
-          {
-            loader: 'thread-loader',
-          },
-          ...cssLoader,
-        ],
+        use: extractSASS.extract({
+          fallback: 'style-loader',
+          use: cssLoader,
+        }),
         include: [path.resolve(root, 'src', 'styles')],
       },
 
@@ -139,14 +143,14 @@ module.exports = {
 
     new HtmlWebpackPlugin({
       template: 'src/index.ejs',
-      chunks: ['polyfills', 'vendor', 'main', 'offline'],
+      chunks: ['polyfills', 'vendor', 'styles', 'main', 'offline'],
       chunksSortMode: 'manual',
       environment,
     }),
 
     new CommonsChunkPlugin({
       name: 'vendor',
-      chunks: ['offline', 'main'],
+      chunks: ['offline', 'main', 'styles'],
       minChunks: (module: any) => /node_modules/.test(module.resource),
     }),
 

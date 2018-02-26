@@ -11,7 +11,7 @@ describe('HomeActions', () => {
     it('returns the correct action object', () => {
       expect(subject.setName('Arthur')).toEqual({
         type: 'HOME_SET_NAME',
-        payload: 'Arthur'
+        payload: 'Arthur',
       });
     });
   });
@@ -19,7 +19,7 @@ describe('HomeActions', () => {
   describe('greetWorld', () => {
     it('returns the correct action object', () => {
       expect(subject.greetWorld()).toEqual({
-        type: 'HOME_GREET_WORLD'
+        type: 'HOME_GREET_WORLD',
       });
     });
   });

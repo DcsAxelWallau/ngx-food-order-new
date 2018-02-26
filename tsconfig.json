@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es5",
     "module": "esnext",
     "noEmitOnError": true,
     "sourceMap": true,
     "importHelpers": true,
     "strict": true,
-    "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "lib": ["dom", "dom.iterable", "scripthost", "es2015", "es2016.array.include", "es2017.object"]
   }
 }

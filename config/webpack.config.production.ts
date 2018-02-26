@@ -13,7 +13,7 @@ function buildProductionConfig() {
 
   return merge.smart(commonConfig, {
     entry: {
-      offline: './src/service-worker.ts'
+      offline: './src/service-worker.ts',
     },
     devtool: 'source-map',
 
@@ -23,10 +23,10 @@ function buildProductionConfig() {
           test: /\.js$/,
           loader: '@angular-devkit/build-optimizer/webpack-loader',
           options: {
-            sourceMap: false
-          }
-        }
-      ]
+            sourceMap: false,
+          },
+        },
+      ],
     },
 
     plugins: [
@@ -38,38 +38,41 @@ function buildProductionConfig() {
         parallel: true,
         sourceMap: true,
         uglifyOptions: {
-          ecma: 6
-        }
+          // ecma: 6,
+          compress: {
+            passes: 3,
+          },
+        },
       }),
 
       new PurifyPlugin(),
 
       new EnvironmentPlugin({
         NODE_ENV: 'production',
-        DEBUG: false
+        DEBUG: false,
       }),
 
       new OfflinePlugin({
         autoUpdate: 5 * 60 * 1000,
         AppCache: false,
-        externals: ['/'],
+        externals: ['/'], // add paths to cache offline here (usually /home or similar)
         excludes: ['_redirects'], // for netlify if used
         ServiceWorker: {
-          events: true
-        }
+          events: true,
+        },
       }),
 
       new CompressionPlugin({
         regExp: /\.css$|\.html$|\.js$|\.map$/,
-        threshold: 2 * 1024
+        threshold: 2 * 1024,
       }),
 
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
         reportFilename: 'report/bundle.html',
-        openAnalyzer: false
-      })
-    ]
+        openAnalyzer: false,
+      }),
+    ],
   });
 }
 

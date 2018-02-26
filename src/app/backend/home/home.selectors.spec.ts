@@ -8,7 +8,7 @@ describe('home selectors', () => {
 
   beforeAll(() => {
     state = fromJS({
-      home: 'World'
+      home: 'World',
     });
   });
 
