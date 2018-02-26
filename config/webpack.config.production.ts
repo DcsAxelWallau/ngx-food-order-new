@@ -55,7 +55,7 @@ function buildProductionConfig() {
       new OfflinePlugin({
         autoUpdate: 5 * 60 * 1000,
         AppCache: false,
-        externals: ['/'], // add paths to cache offline here (usually /home or similar)
+        externals: ['/', 'home'], // add paths to cache offline here (usually /home or similar)
         excludes: ['_redirects'], // for netlify if used
         ServiceWorker: {
           events: true,
