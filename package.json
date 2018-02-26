@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "compile": "webpack --config config/webpack.config.production.ts",
-    "build": "run-s lint test:coverage compile docs",
+    "build":
+      "cross-env TS_NODE_PROJECT=config/tsconfig.node.json run-s lint test:coverage compile docs",
     "build:production": "cross-env APP_ENV=production npm run build",
     "build:staging": "cross-env APP_ENV=staging npm run build",
-    "watch": "webpack-dev-server --config webpack.config.ts",
+    "watch":
+      "cross-env TS_NODE_PROJECT=config/tsconfig.node.json webpack-dev-server --config webpack.config.ts",
     "serve": "serve dist -p 8080 -c 0 -s",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -137,7 +139,7 @@
     "setupTestFrameworkScriptFile": "<rootDir>/config/setup-jest.ts",
     "globals": {
       "ts-jest": {
-        "tsConfigFile": "config/tsconfig.spec.json"
+        "tsConfigFile": "config/tsconfig.node.json"
       },
       "__TRANSFORM_HTML__": true
     },
