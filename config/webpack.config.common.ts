@@ -60,7 +60,7 @@ module.exports = {
   entry: {
     polyfills: './src/polyfills.ts',
     main: './src/main.ts',
-    styles: './src/styles/application.scss',
+    styles: ['./src/styles/application.scss', './src/styles/font-awesome.ts'],
   },
 
   output: {
