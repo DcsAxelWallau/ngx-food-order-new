@@ -1,4 +1,6 @@
 import fontawesome from '@fortawesome/fontawesome';
-import solid from '@fortawesome/fontawesome-free-solid';
+import { faCameraRetro, faAddressBook, faAmbulance } from '@fortawesome/fontawesome-free-solid';
 
-fontawesome.library.add(solid);
+fontawesome.library.add(faCameraRetro);
+fontawesome.library.add(faAddressBook);
+fontawesome.library.add(faAmbulance);

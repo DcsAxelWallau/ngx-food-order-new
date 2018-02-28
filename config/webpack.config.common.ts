@@ -49,6 +49,7 @@ module.exports = {
     // mainFields: ['es2015', 'module', 'main'],
     alias: {
       ...rxPaths(),
+      '@fortawesome/fontawesome-free-solid$': '@fortawesome/fontawesome-free-solid/shakable.es.js',
       'transit-immutable-js': path.resolve(root, 'config', 'resource-override.js'),
       'date-fns': path.resolve(root, 'config', 'resource-override.js'),
       // tslint:disable-next-line:object-literal-key-quotes
