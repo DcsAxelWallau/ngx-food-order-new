@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2017",
     "module": "esnext",
     "noEmitOnError": true,
     "sourceMap": true,
@@ -9,7 +9,6 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "lib": ["dom", "dom.iterable", "scripthost", "es2015", "es2016.array.include", "es2017.object"]
+    "emitDecoratorMetadata": true
   }
 }

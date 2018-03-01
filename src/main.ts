@@ -11,7 +11,6 @@ const bootstrap = () => platformBrowserDynamic().bootstrapModule(MainModule);
 
 if (module.hot) {
   import('./hmr').then(m => {
-    console.log(m);
     m.hmrBootstrap(module, bootstrap);
   });
 } else {

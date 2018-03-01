@@ -22,5 +22,6 @@ export class HomeComponent extends ContainerComponent implements OnInit {
   public ngOnInit() {
     this.valueFromObservable(this.greeting$, 'greeting');
     this.homeActions.greetWorld();
+    console.log('fffffffffffff');
   }
 }
