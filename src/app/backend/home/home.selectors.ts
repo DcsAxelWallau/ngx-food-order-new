@@ -1,5 +1,5 @@
-import { IState } from '@dcs/ngx-utils';
+import { IState } from '../interfaces';
 
 export function homeGreetingSelector(state: IState): string {
-  return state.get('home');
+  return state.home;
 }

@@ -1,15 +1,9 @@
-import { HomeActions } from './home.actions';
+import { greetWorld, setName } from './home.actions';
 
-describe('HomeActions', () => {
-  let subject: HomeActions;
-
-  beforeEach(() => {
-    subject = new HomeActions();
-  });
-
+describe('home actions', () => {
   describe('setName', () => {
     it('returns the correct action object', () => {
-      expect(subject.setName('Arthur')).toEqual({
+      expect(setName('Arthur')).toEqual({
         type: 'HOME_SET_NAME',
         payload: 'Arthur',
       });
@@ -18,7 +12,7 @@ describe('HomeActions', () => {
 
   describe('greetWorld', () => {
     it('returns the correct action object', () => {
-      expect(subject.greetWorld()).toEqual({
+      expect(greetWorld()).toEqual({
         type: 'HOME_GREET_WORLD',
       });
     });

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { select } from '@angular-redux/store';
+import { select, NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 import { ContainerComponent } from '@dcs/ngx-utils';
 
-import { HomeActions } from '../backend/home/home.actions';
+import { greetWorld, fetchUser } from '../backend/home/home.actions';
 import { homeGreetingSelector } from '../backend/home/home.selectors';
+import { IState } from '../backend/interfaces';
 
 @Component({
   selector: 'dcs-home',
@@ -15,12 +16,15 @@ export class HomeComponent extends ContainerComponent implements OnInit {
   @select(homeGreetingSelector) public greeting$: Observable<string>;
   public greeting: string = '';
 
-  constructor(private homeActions: HomeActions) {
+  constructor(private store: NgRedux<IState>) {
     super();
   }
 
   public ngOnInit() {
-    this.valueFromObservable(this.greeting$, 'greeting');
-    this.homeActions.greetWorld();
+    this.subscribeToObservable(this.greeting$, greeting => {
+      this.greeting = greeting;
+    });
+    this.store.dispatch(greetWorld());
+    this.store.dispatch(fetchUser('2'));
   }
 }

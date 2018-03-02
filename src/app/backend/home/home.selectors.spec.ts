@@ -1,15 +1,12 @@
-import { IState } from '@dcs/ngx-utils';
-import { fromJS } from 'immutable';
-
 import { homeGreetingSelector } from './home.selectors';
 
 describe('home selectors', () => {
-  let state: IState;
+  let state: any;
 
   beforeAll(() => {
-    state = fromJS({
+    state = {
       home: 'World',
-    });
+    };
   });
 
   describe('homeGreetingSelector', () => {
