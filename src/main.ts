@@ -1,3 +1,6 @@
+import './polyfills';
+import './styles/font-awesome';
+
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 

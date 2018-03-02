@@ -13,7 +13,7 @@ function buildProductionConfig() {
     mode: 'production',
 
     entry: {
-      offline: './src/service-worker.ts',
+      main: ['./src/main.ts', './src/service-worker.ts'],
     },
 
     module: {

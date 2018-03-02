@@ -3,7 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 const { EnvironmentPlugin, NormalModuleReplacementPlugin, ProgressPlugin } = require('webpack');
 const rxPaths = require('rxjs/_esm5/path-mapping');
@@ -15,7 +15,7 @@ const APP_ENV = process.env.APP_ENV || 'development';
 const Environment = require(path.resolve(root, 'src', 'environments', APP_ENV)).default;
 const environment = new Environment();
 
-// const extractSASS = new ExtractTextPlugin('application-sass.css');
+const extractSASS = new ExtractTextPlugin('application-sass.css');
 const cssLoader = [
   {
     loader: 'raw-loader',
@@ -25,7 +25,16 @@ const cssLoader = [
     options: {
       sourceMap: true,
       plugins: () => {
-        return [require('autoprefixer')];
+        let plugins = [require('autoprefixer')];
+        if (APP_ENV === 'production') {
+          plugins = [
+            ...plugins,
+            require('cssnano')({
+              preset: 'default',
+            }),
+          ];
+        }
+        return plugins;
       },
     },
   },
@@ -35,7 +44,6 @@ const cssLoader = [
 module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
-    // readd when targeting es2015+ builds
     mainFields: ['es2015', 'module', 'main'],
     alias: {
       ...rxPaths(),
@@ -49,10 +57,8 @@ module.exports = {
     },
   },
   entry: {
-    polyfills: './src/polyfills.ts',
     main: './src/main.ts',
     styles: './src/styles/application.scss',
-    fa: './src/styles/font-awesome.ts',
   },
 
   output: {
@@ -83,12 +89,7 @@ module.exports = {
 
       {
         test: /\.(scss)$/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          ...cssLoader,
-        ],
+        use: extractSASS.extract({ fallback: 'style-loader', use: cssLoader }),
         include: [path.resolve(root, 'src', 'styles')],
       },
       {
@@ -104,18 +105,6 @@ module.exports = {
         },
       },
     ],
-  },
-
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
-      },
-    },
   },
 
   plugins: [
@@ -157,6 +146,6 @@ module.exports = {
       sourceMap: true,
     }),
 
-    // extractSASS,
+    extractSASS,
   ],
 };
