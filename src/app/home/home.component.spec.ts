@@ -4,7 +4,6 @@ import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing'
 import { Subject } from 'rxjs/Subject';
 
 import { HomeComponent } from './home.component';
-import { HomeActions } from '../backend/home/home.actions';
 
 describe('testing a component as class', () => {
   let subject: HomeComponent;
@@ -16,13 +15,11 @@ describe('testing a component as class', () => {
 
     TestBed.configureTestingModule({
       imports: [CommonModule, NgReduxTestingModule],
-      providers: [HomeActions],
     });
   });
 
   beforeEach(() => {
-    const homeActions = TestBed.get(HomeActions);
-    subject = new HomeComponent(homeActions);
+    subject = new HomeComponent(MockNgRedux.instance as any);
     greeting$ = subject.greeting$ as Subject<string>;
     subject.ngOnInit();
   });

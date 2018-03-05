@@ -67,6 +67,8 @@ module.exports = {
     path: path.resolve(root, 'dist'),
   },
 
+  performance: { hints: false },
+
   module: {
     rules: [
       {

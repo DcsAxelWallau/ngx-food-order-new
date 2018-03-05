@@ -1,16 +1,31 @@
-import { Middleware } from 'redux';
-import {
-  IEnvironment,
-  loggerMiddleware,
-  DefaultEnvironment
-} from '@dcs/ngx-utils';
+import { DevToolsExtension } from '@angular-redux/store';
+import { createLogger } from 'redux-logger';
+import immutableStateInvariantMiddleware from 'redux-immutable-state-invariant';
 
-export default class DevelopmentEnvironment extends DefaultEnvironment
-  implements IEnvironment {
-  public apiUrl = 'http://localhost:3001';
+import { Environment } from './default-environment.class';
+
+const logger = createLogger({
+  collapsed: true,
+  diff: true,
+  duration: true,
+  timestamp: true,
+});
+
+export default class DevelopmentEnvironment extends Environment {
+  public apiUrl = '//localhost:3001';
   public throwOnSchemaError = false;
-  public pageTitle = 'DCS Angular Starter (development)';
+  public pageTitle = 'DCS Food Order (development)';
   public base = '/';
 
-  public additionalMiddleware: Middleware[] = [loggerMiddleware];
+  constructor(devTools?: DevToolsExtension) {
+    super();
+    if (devTools) {
+      this.additionalEnhancers = [...this.additionalEnhancers, devTools.enhancer()];
+    }
+    this.additionalMiddleware = [
+      ...this.additionalMiddleware,
+      logger,
+      immutableStateInvariantMiddleware({ ignore: ['error'] } as any),
+    ];
+  }
 }
