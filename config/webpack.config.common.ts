@@ -3,39 +3,38 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const { CommonsChunkPlugin } = require('webpack').optimize;
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
-const {
-  NoEmitOnErrorsPlugin,
-  EnvironmentPlugin,
-  NormalModuleReplacementPlugin,
-} = require('webpack');
+const { EnvironmentPlugin, NormalModuleReplacementPlugin, ProgressPlugin } = require('webpack');
 const rxPaths = require('rxjs/_esm5/path-mapping');
 
 const root = process.cwd();
 const TS_VERSION = require('typescript').version;
 const APP_ENV = process.env.APP_ENV || 'development';
-const extractSASS = new ExtractTextPlugin('[name]-sass.css');
 
 const Environment = require(path.resolve(root, 'src', 'environments', APP_ENV)).default;
 const environment = new Environment();
 
+const extractSASS = new ExtractTextPlugin('application-sass.css');
 const cssLoader = [
   {
-    loader: 'css-loader',
-    options: {
-      minimize: APP_ENV !== 'development',
-      sourceMap: true,
-    },
+    loader: 'raw-loader',
   },
   {
     loader: 'postcss-loader',
     options: {
       sourceMap: true,
       plugins: () => {
-        return [require('autoprefixer')];
+        let plugins = [require('autoprefixer')];
+        if (APP_ENV === 'production') {
+          plugins = [
+            ...plugins,
+            require('cssnano')({
+              preset: 'default',
+            }),
+          ];
+        }
+        return plugins;
       },
     },
   },
@@ -45,8 +44,7 @@ const cssLoader = [
 module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
-    // readd when targeting es2015+ builds
-    // mainFields: ['es2015', 'module', 'main'],
+    mainFields: ['es2015', 'module', 'main'],
     alias: {
       ...rxPaths(),
       '@fortawesome/fontawesome-free-solid$': '@fortawesome/fontawesome-free-solid/shakable.es.js',
@@ -59,9 +57,8 @@ module.exports = {
     },
   },
   entry: {
-    polyfills: './src/polyfills.ts',
     main: './src/main.ts',
-    styles: ['./src/styles/application.scss', './src/styles/font-awesome.ts'],
+    styles: './src/styles/application.scss',
   },
 
   output: {
@@ -81,7 +78,6 @@ module.exports = {
           },
         ],
       },
-      { test: /\.json$/, use: 'json-loader' },
       { test: /\.(jpg|png|gif)$/, use: 'file-loader' },
       { test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/, use: 'file-loader' },
       { test: /\.css$/, use: 'raw-loader' },
@@ -90,34 +86,30 @@ module.exports = {
         loader: 'raw-loader',
         include: [path.resolve(root, 'src', 'app')],
       },
-      {
-        test: /\.(scss)$/,
-        use: extractSASS.extract({
-          fallback: 'style-loader',
-          use: cssLoader,
-        }),
-        include: [path.resolve(root, 'src', 'styles')],
-      },
 
       {
         test: /\.(scss)$/,
-        use: [
-          {
-            loader: 'to-string-loader',
-          },
-          ...cssLoader,
-        ],
+        use: extractSASS.extract({ fallback: 'style-loader', use: cssLoader }),
+        include: [path.resolve(root, 'src', 'styles')],
+      },
+      {
+        test: /\.(scss)$/,
+        use: cssLoader,
         include: [path.resolve(root, 'src', 'app')],
+      },
+
+      {
+        test: /\.js$/,
+        parser: {
+          system: true, // no warning
+        },
       },
     ],
   },
 
-  devtool: 'source-map',
-
   plugins: [
-    new CleanWebpackPlugin(['dist'], { root: path.resolve(root) }),
     new ProgressPlugin(),
-    new NoEmitOnErrorsPlugin(),
+    new CleanWebpackPlugin(['dist'], { root: path.resolve(root) }),
 
     new CopyWebpackPlugin([
       {
@@ -145,15 +137,7 @@ module.exports = {
 
     new HtmlWebpackPlugin({
       template: 'src/index.ejs',
-      chunks: ['polyfills', 'vendor', 'styles', 'main', 'offline'],
-      chunksSortMode: 'manual',
       environment,
-    }),
-
-    new CommonsChunkPlugin({
-      name: 'vendor',
-      chunks: ['offline', 'main', 'styles'],
-      minChunks: (module: any) => /node_modules/.test(module.resource),
     }),
 
     new AngularCompilerPlugin({

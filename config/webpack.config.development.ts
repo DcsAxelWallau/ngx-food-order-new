@@ -1,14 +1,11 @@
 function buildDevelopmentConfig() {
   const merge = require('webpack-merge');
-  const {
-    EnvironmentPlugin,
-    HotModuleReplacementPlugin,
-    NamedModulesPlugin,
-  } = require('webpack');
+  const { EnvironmentPlugin, HotModuleReplacementPlugin } = require('webpack');
 
   const commonConfig = require('./webpack.config.common');
 
   return merge.smart(commonConfig, {
+    mode: 'development',
     devtool: 'cheap-module-eval-source-map',
 
     plugins: [
@@ -16,7 +13,6 @@ function buildDevelopmentConfig() {
         NODE_ENV: 'development',
         DEBUG: true,
       }),
-      new NamedModulesPlugin({}),
       new HotModuleReplacementPlugin(),
     ],
 
@@ -24,7 +20,7 @@ function buildDevelopmentConfig() {
       historyApiFallback: true,
       hot: true,
       overlay: {
-        warnings: true,
+        warnings: false,
         errors: true,
       },
       port: 3000,

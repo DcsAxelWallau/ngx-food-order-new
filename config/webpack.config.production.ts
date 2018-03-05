@@ -1,21 +1,20 @@
 function buildProductionConfig() {
   const merge = require('webpack-merge');
-  const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
   const OfflinePlugin = require('offline-plugin');
   const CompressionPlugin = require('compression-webpack-plugin');
 
   const { PurifyPlugin } = require('@angular-devkit/build-optimizer');
-  const { EnvironmentPlugin, HashedModuleIdsPlugin } = require('webpack');
-  // const { ModuleConcatenationPlugin } = require('webpack').optimize;
+  const { EnvironmentPlugin } = require('webpack');
   const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
   const commonConfig = require('./webpack.config.common');
 
   return merge.smart(commonConfig, {
+    mode: 'production',
+
     entry: {
-      offline: './src/service-worker.ts',
+      main: ['./src/main.ts', './src/service-worker.ts'],
     },
-    devtool: 'source-map',
 
     module: {
       rules: [
@@ -30,21 +29,6 @@ function buildProductionConfig() {
     },
 
     plugins: [
-      // deactivated until webpack v4, see https://github.com/webpack/webpack/issues/5663
-      // new ModuleConcatenationPlugin(),
-      new HashedModuleIdsPlugin(),
-
-      new UglifyJsPlugin({
-        parallel: true,
-        sourceMap: true,
-        uglifyOptions: {
-          // ecma: 6,
-          compress: {
-            passes: 3,
-          },
-        },
-      }),
-
       new PurifyPlugin(),
 
       new EnvironmentPlugin({
@@ -59,6 +43,7 @@ function buildProductionConfig() {
         excludes: ['_redirects'], // for netlify if used
         ServiceWorker: {
           events: true,
+          minify: false,
         },
       }),
 
