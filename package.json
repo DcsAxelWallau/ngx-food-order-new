@@ -1,5 +1,5 @@
 {
-  "name": "@dcs/ngx-starter",
+  "name": "ngx-food-order-new",
   "version": "2.0.0",
   "description": "Sample project to show Angular project development at DCS Fürth",
   "main": "index.js",
