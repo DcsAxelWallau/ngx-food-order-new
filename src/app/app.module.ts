@@ -8,6 +8,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { setupStore } from '@dcs/redux-utils';
 import { APP_TRANSLATIONS } from '@dcs/ngx-utils';
 import { createEpicMiddleware } from 'redux-observable';
+import { TranslateService } from '@ngx-translate/core';
+import { persistStore } from 'redux-persist';
 
 import { Environment } from '../environments/default-environment.class';
 import CurrentEnvironment from '../environment';
@@ -16,10 +18,11 @@ import { routes } from './app.routes';
 import { rootReducer } from './backend/root.reducer';
 import { IState } from './backend/interfaces';
 import { rootEpic } from './backend/root.epic';
+import { AuthGuard } from './backend/auth/auth.guard';
+import { ComponentsModule } from './components/components.module';
 
 import { translations as en } from './locale/en';
 import { translations as de } from './locale/de';
-import { TranslateService } from '@ngx-translate/core';
 
 const initialState = {} as any;
 
@@ -41,8 +44,10 @@ export function provideEnvironment(devTools: DevToolsExtension) {
     NgReduxRouterModule.forRoot(),
     TranslateModule.forRoot(),
     // App modules
+    ComponentsModule,
   ],
   providers: [
+    AuthGuard,
     { provide: Environment, useFactory: provideEnvironment, deps: [DevToolsExtension] },
     { provide: LOCALE_ID, useValue: 'de' },
     {
@@ -80,8 +85,10 @@ export class AppModule {
       rootReducer,
       initialState,
       [...environment.additionalMiddleware, epicMiddleware],
-      environment.additionalEnhancers
+      [...environment.additionalEnhancers]
     );
+
+    persistStore(store);
 
     ngRedux.provideStore(store);
     ngReduxRouter.initialize();

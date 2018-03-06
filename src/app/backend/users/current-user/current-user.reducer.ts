@@ -8,7 +8,7 @@ export interface ICurrentUserState extends INormalizedEntityState {
   entities: { users: { [key: string]: IUser } };
 }
 
-export const initialState: ICurrentUserState = {
+export const initialState: ICurrentUserState = Object.freeze({
   result: '',
   entities: { users: {} },
   loading: false,
@@ -16,7 +16,7 @@ export const initialState: ICurrentUserState = {
   updating: false,
   updatedAt: null,
   error: null,
-};
+});
 
 export const currentUser = (
   state: ICurrentUserState = initialState,

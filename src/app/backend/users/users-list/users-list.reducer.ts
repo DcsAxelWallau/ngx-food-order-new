@@ -16,7 +16,7 @@ export function asyncFetchSuccessReducer<S extends INormalizedState>(
   state: S,
   action: AnyAction
 ): S {
-  return Object.assign(state, action.payload, {
+  return Object.assign({}, state, action.payload, {
     loaded: true,
     updatedAt: action.meta && action.meta.updatedAt,
   });
@@ -30,7 +30,7 @@ export function asyncFetchCompleteReducer<S extends INormalizedState>(state: S):
   return state.loading ? Object.assign({}, state, { loading: false }) : state;
 }
 
-export const initialState: IUsersListState = {
+export const initialState: IUsersListState = Object.freeze({
   result: [] as string[],
   entities: { users: {} },
   loading: false,
@@ -38,7 +38,7 @@ export const initialState: IUsersListState = {
   updating: false,
   updatedAt: null,
   error: null,
-};
+});
 
 export const usersList = (
   state: IUsersListState = initialState,

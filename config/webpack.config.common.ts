@@ -140,6 +140,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/index.ejs',
       environment,
+      chunksSortMode: 'none',
     }),
 
     new AngularCompilerPlugin({

@@ -32,9 +32,9 @@ export class HomeComponent extends ContainerComponent implements OnInit {
       this.greeting = greeting;
     });
 
-    this.subscribeToObservable(this.user$, user => {
-      console.warn('loaded', user, user.loaded);
-    });
+    // this.subscribeToObservable(this.user$, user => {
+    //   console.warn('loaded', user, user.loaded);
+    // });
 
     this.subscribeToObservable(this.users$, users => {
       console.warn('loaded list', users);
