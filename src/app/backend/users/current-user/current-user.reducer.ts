@@ -1,5 +1,9 @@
 import { AnyAction } from 'redux';
-import { INormalizedEntityState } from '@dcs/redux-utils';
+import {
+  INormalizedEntityState,
+  asyncFetchReducer,
+  generateNormalizedState,
+} from '@dcs/redux-utils';
 
 import { fetchActions } from './current-user.actions';
 import { IUser } from '../models/user.class';
@@ -9,28 +13,19 @@ export interface ICurrentUserState extends INormalizedEntityState {
 }
 
 export const initialState: ICurrentUserState = Object.freeze({
+  ...generateNormalizedState(),
   result: '',
   entities: { users: {} },
-  loading: false,
-  loaded: false,
-  updating: false,
-  updatedAt: null,
-  error: null,
 });
 
 export const currentUser = (
   state: ICurrentUserState = initialState,
   action: AnyAction
 ): ICurrentUserState => {
+  state = asyncFetchReducer(state, initialState, action, fetchActions);
+
   switch (action.type) {
-    case fetchActions.start:
-      return { ...initialState, loading: true };
-
-    case fetchActions.success:
-      return { ...initialState, ...action.payload, loaded: true, updatedAt: new Date() };
-
-    case fetchActions.error:
-      return { ...initialState, error: action.payload };
+  // add custom action handlers here
   }
 
   return state;
