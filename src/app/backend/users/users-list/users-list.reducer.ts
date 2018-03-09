@@ -44,6 +44,9 @@ const pushIntoResult = curry(
   }
 );
 
+const addUser = (state: INormalizedCollectionState, action: AnyAction) =>
+  compose(updateUserEntity(action), pushIntoResult(action))(state) as IUsersListState;
+
 export const usersList = (
   state: IUsersListState = initialState,
   action: AnyAction
@@ -56,7 +59,7 @@ export const usersList = (
       return updateUserEntity(action)(state) as IUsersListState;
 
     case createActions.success:
-      return compose(updateUserEntity(action), pushIntoResult(action))(state) as IUsersListState;
+      return addUser(state, action);
 
     case deleteActions.start:
       return {
