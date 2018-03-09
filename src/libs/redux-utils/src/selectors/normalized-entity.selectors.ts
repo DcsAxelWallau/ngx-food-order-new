@@ -1,5 +1,5 @@
-import { createSelector, OutputSelector } from 'reselect';
-import { denormalize, Schema } from 'normalizr';
+import { Schema, denormalize } from 'normalizr';
+import { OutputSelector, createSelector } from 'reselect';
 
 import { INormalizedEntityState, INormalizedState } from './interfaces';
 
@@ -44,6 +44,7 @@ export function normalizedEntitySelectorFactory<S, R, T>(
     subState: subStateSelector,
     loading: subStateKeySelectorFactory<S, boolean>(subStateSelector, 'loading'),
     loaded: subStateKeySelectorFactory<S, boolean>(subStateSelector, 'loaded'),
+    updating: subStateKeySelectorFactory<S, boolean>(subStateSelector, 'updating'),
     error: subStateKeySelectorFactory<S, any>(subStateSelector, 'error'),
     updatedAt: subStateKeySelectorFactory<S, Date>(subStateSelector, 'updatedAt'),
     rawEntity: rawSelector,

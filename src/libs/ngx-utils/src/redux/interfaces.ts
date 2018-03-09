@@ -1,7 +1,8 @@
-import { AnyAction } from 'redux';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { Schema } from 'normalizr';
+import { AnyAction } from 'redux';
+import { Observable } from 'rxjs/Observable';
+
+import { HttpErrorResponse } from '@angular/common/http';
 
 export type IRequestMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -12,7 +13,7 @@ export interface IApiActionRequest {
 }
 
 export interface IApiActionHandlers {
-  start: () => AnyAction;
+  start: (data: any) => AnyAction;
   success: (data: any) => AnyAction;
   error: (error: HttpErrorResponse) => AnyAction;
   complete: () => AnyAction;

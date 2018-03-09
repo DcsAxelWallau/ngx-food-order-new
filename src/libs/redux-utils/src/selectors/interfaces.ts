@@ -5,6 +5,7 @@ export interface INormalizedState {
   updating: boolean;
   updatedAt: Date | null;
   error: any;
+  lastState: INormalizedState | null;
 }
 
 export interface INormalizedEntityState extends INormalizedState {

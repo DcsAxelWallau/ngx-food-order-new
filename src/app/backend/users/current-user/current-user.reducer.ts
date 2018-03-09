@@ -1,12 +1,16 @@
+import * as __ from 'ramda/src/__';
+import * as compose from 'ramda/src/compose';
 import { AnyAction } from 'redux';
+
 import {
   INormalizedEntityState,
-  asyncFetchReducer,
+  asyncFetchReducerFactory,
+  asyncUpdateEntityReducerFactory,
   generateNormalizedState,
 } from '@dcs/redux-utils';
 
-import { fetchActions } from './current-user.actions';
 import { IUser } from '../models/user.class';
+import { fetchActions, updateActions } from './current-user.actions';
 
 export interface ICurrentUserState extends INormalizedEntityState {
   entities: { users: { [key: string]: IUser } };
@@ -18,15 +22,10 @@ export const initialState: ICurrentUserState = Object.freeze({
   entities: { users: {} },
 });
 
+const fetchReducer = asyncFetchReducerFactory(initialState, fetchActions);
+const updateReducer = asyncUpdateEntityReducerFactory(initialState, updateActions);
+
 export const currentUser = (
   state: ICurrentUserState = initialState,
   action: AnyAction
-): ICurrentUserState => {
-  state = asyncFetchReducer(state, initialState, action, fetchActions);
-
-  switch (action.type) {
-  // add custom action handlers here
-  }
-
-  return state;
-};
+): ICurrentUserState => compose(fetchReducer(__, action), updateReducer(__, action))(state);

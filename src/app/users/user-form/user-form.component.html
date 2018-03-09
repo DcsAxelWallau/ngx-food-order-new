@@ -1,0 +1,35 @@
+<form [formGroup]="form" (submit)="save()">
+  <div class="row">
+
+    <div class="col">
+      <label for="input-firstname">Firstname</label>
+      <input type="text" id="input-firstname" formControlName="firstname">
+    </div>
+
+    <div class="col">
+      <label for="input-lastname">Lastname</label>
+      <input type="text" id="input-lastname" formControlName="lastname">
+
+    </div>
+
+    <div class="col">
+      <label for="input-email">E-Mail</label>
+      <input type="text" id="input-email" formControlName="email">
+
+    </div>
+
+    <div class="col">
+      <button type="submit" [disabled]="form.invalid">Save User</button>
+    </div>
+  </div>
+</form>
+
+<div class="error" *ngIf="error">
+  <p>Error!</p>
+  <p>Status: {{ (error || {}).status }}</p>
+  <p>Message: {{ (error || {}).message }}</p>
+</div>
+
+<div class="updating" *ngIf="updating">
+  Saving data ...
+</div>

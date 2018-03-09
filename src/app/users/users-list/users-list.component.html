@@ -1,0 +1,38 @@
+<h2>Users List</h2>
+
+<table *ngIf="showData; else loader">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>E-Mail</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users;">
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <a routerLink="/users/{{ user.id }}/edit">edit</a>&nbsp;
+        <a role="button" (click)="removeUser(user)">delete</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #loader>
+  <div>loading...</div>
+</ng-template>
+
+<div class="updating" *ngIf="updating">
+  Deleting user ...
+</div>
+
+<div class="error" *ngIf="error">
+  <p>Error!</p>
+  <p>Status: {{ (error || {}).status }}</p>
+  <p>Message: {{ (error || {}).message }}</p>
+</div>
+
+
+<a routerLink="/users/new">Create User</a>

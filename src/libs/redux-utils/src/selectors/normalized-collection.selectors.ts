@@ -1,11 +1,11 @@
-import { createSelector, OutputSelector } from 'reselect';
-import { denormalize, Schema } from 'normalizr';
+import { Schema, denormalize } from 'normalizr';
+import { OutputSelector, createSelector } from 'reselect';
 
 import { INormalizedCollectionState } from './interfaces';
 import {
   Constructor,
-  subStateKeySelectorFactory,
   ISubStateSelector,
+  subStateKeySelectorFactory,
 } from './normalized-entity.selectors';
 
 export function rawCollectionSelectorFactory<S, E>(
@@ -42,6 +42,10 @@ export function normalizedCollectionSelectorFactory<S, R, T>(
     loaded: subStateKeySelectorFactory<S, boolean, INormalizedCollectionState>(
       subStateSelector,
       'loaded'
+    ),
+    updating: subStateKeySelectorFactory<S, boolean, INormalizedCollectionState>(
+      subStateSelector,
+      'updating'
     ),
     error: subStateKeySelectorFactory<S, any, INormalizedCollectionState>(
       subStateSelector,

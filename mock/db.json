@@ -66,6 +66,12 @@
       "firstname": "Ford",
       "lastname": "Perfect",
       "email": "ford@betelgeuse.com"
+    },
+    {
+      "id": 3,
+      "email": "trillian@microsoft.com",
+      "firstname": "Tricia",
+      "lastname": "McMillan"
     }
   ]
 }

@@ -1,17 +1,19 @@
-import { HttpClient } from '@angular/common/http';
-import { AnyAction, Store } from 'redux';
 import { normalize } from 'normalizr';
+import * as curry from 'ramda/src/curry';
+import { AnyAction, Store } from 'redux';
 import { ofType } from 'redux-observable';
-import { generateAsyncActionNames } from '@dcs/redux-utils';
 import { Observable } from 'rxjs/Observable';
 import { concat } from 'rxjs/observable/concat';
 import { never } from 'rxjs/observable/never';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
 
-import { API_ACTION } from '../tokens';
-import { IApiAction, IApiActionHandlers } from '../interfaces';
+import { HttpClient } from '@angular/common/http';
+import { generateAsyncActionNames } from '@dcs/redux-utils';
+
 import { IEnvironment } from '../../environment/interfaces';
+import { IApiAction, IApiActionHandlers } from '../interfaces';
+import { API_ACTION } from '../tokens';
 
 export function getHandlers(
   handlers: IApiActionHandlers | string,
@@ -21,8 +23,8 @@ export function getHandlers(
     const actions = generateAsyncActionNames(handlers);
 
     return {
-      start() {
-        return { type: actions.start, meta: { ...meta } };
+      start(data) {
+        return { type: actions.start, payload: data, meta: { ...meta } };
       },
       success(data) {
         return { type: actions.success, payload: data, meta: { ...meta, updatedAt: new Date() } };
@@ -65,17 +67,12 @@ export function apiRequestEpic<S>(
       const request = action.payload.request;
 
       return concat(
-        of(handlers.start()),
+        of(handlers.start(getRequestPayload(action))),
         dependencies.http
           .request(request.method, getUrl(request.url, dependencies.environment), request.options)
           .pipe(
             map(action.payload.rawDataProcessor || defaultDataProcessor),
-            map(data => {
-              if (action.payload.normalizrSchema) {
-                return normalize(data, action.payload.normalizrSchema);
-              }
-              return data;
-            }),
+            map(normalizeData(action)),
             map(handlers.success),
             catchError(error => of(handlers.error(error))),
             takeUntil(action.payload.cancel || never())
@@ -85,3 +82,19 @@ export function apiRequestEpic<S>(
     })
   );
 }
+
+export function getRequestPayload(action: IApiAction): any {
+  let requestPayload = action.payload.request.options ? action.payload.request.options.body : null;
+
+  if (requestPayload && action.payload.normalizrSchema) {
+    requestPayload = normalize(requestPayload, action.payload.normalizrSchema);
+  }
+  return requestPayload;
+}
+
+export const normalizeData = curry((action: IApiAction, data: any): any => {
+  if (action.payload.normalizrSchema) {
+    return normalize(data, action.payload.normalizrSchema);
+  }
+  return data;
+});

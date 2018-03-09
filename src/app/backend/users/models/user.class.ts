@@ -15,6 +15,15 @@ export class User extends ViewModel<IUser> {
     lastname: '',
   };
 
+  public id: string;
+  public email: string;
+  public firstname: string;
+  public lastname: string;
+
+  get name(): string {
+    return `${this.firstname} ${this.lastname}`;
+  }
+
   constructor(props: Partial<IUser>) {
     props = props || User.defaults;
     super(props);
