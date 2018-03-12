@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
+import { generateAsyncActionNames } from '@dcs/redux-utils';
 import { normalize } from 'normalizr';
-import * as curry from 'ramda/src/curry';
+import { curry } from 'ramda';
 import { AnyAction, Store } from 'redux';
 import { ofType } from 'redux-observable';
 import { Observable } from 'rxjs/Observable';
@@ -7,10 +9,6 @@ import { concat } from 'rxjs/observable/concat';
 import { never } from 'rxjs/observable/never';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
-
-import { HttpClient } from '@angular/common/http';
-import { generateAsyncActionNames } from '@dcs/redux-utils';
-
 import { IEnvironment } from '../../environment/interfaces';
 import { IApiAction, IApiActionHandlers } from '../interfaces';
 import { API_ACTION } from '../tokens';

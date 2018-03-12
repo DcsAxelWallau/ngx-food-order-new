@@ -7,4 +7,5 @@ export const routes: Routes = [
   { path: 'home', loadChildren: './home/home.module#HomeModule', canActivateChild: [AuthGuard] },
   { path: 'auth', loadChildren: './auth/auth.module#AuthModule' },
   { path: 'users', loadChildren: './users/users.module#UsersModule' },
+  { path: 'products', loadChildren: './products/products.module#ProductsModule' },
 ];

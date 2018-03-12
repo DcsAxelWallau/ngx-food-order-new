@@ -1,0 +1,39 @@
+<form [formGroup]="form" (submit)="save()">
+  <div class="row">
+
+    <div class="col">
+      <label for="input-articleId">Article Number</label>
+      <input type="text" id="input-articleId" formControlName="articleId">
+    </div>
+
+    <div class="col">
+      <label for="input-label">Label</label>
+      <input type="text" id="input-label" formControlName="label">
+    </div>
+
+    <div class="col">
+      <label for="input-price">Price</label>
+      <input type="number" min="0" step="0.05" id="input-price" formControlName="price">
+    </div>
+
+    <div class="col">
+      <button type="submit" [disabled]="form.invalid">Save Product</button>
+    </div>
+  </div>
+</form>
+
+<div class="error" *ngIf="error">
+  <p>Error!</p>
+  <p>Status: {{ (error || {}).status }}</p>
+  <p>Message: {{ (error || {}).message }}</p>
+</div>
+
+<div class="updating" *ngIf="updating">
+  Saving data ...
+</div>
+
+<div class="loading" *ngIf="loading">
+  Loading ...
+</div>
+
+<a routerLink="/products">back</a>

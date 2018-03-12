@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'dcs-login',
@@ -25,7 +25,6 @@ export class LoginComponent {
     e && e.preventDefault();
 
     if (this.form.valid) {
-      console.log('login!!', this.form.value);
       this.onAuthenticate.next(this.form.value.email);
     }
   }

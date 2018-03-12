@@ -1,28 +1,28 @@
-import { NgModule, LOCALE_ID, Inject } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, PreloadAllModules } from '@angular/router';
+import { NgReduxRouter, NgReduxRouterModule } from '@angular-redux/router';
+import { DevToolsExtension, NgRedux, NgReduxModule } from '@angular-redux/store';
+import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { NgRedux, NgReduxModule, DevToolsExtension } from '@angular-redux/store';
-import { NgReduxRouterModule, NgReduxRouter } from '@angular-redux/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { setupStore } from '@dcs/redux-utils';
+import localeDe from '@angular/common/locales/de';
+import { Inject, LOCALE_ID, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { APP_TRANSLATIONS } from '@dcs/ngx-utils';
-import { createEpicMiddleware } from 'redux-observable';
+import { setupStore } from '@dcs/redux-utils';
+import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
+import { createEpicMiddleware } from 'redux-observable';
 import { persistStore } from 'redux-persist';
-
-import { Environment } from '../environments/default-environment.class';
-import CurrentEnvironment from '../environment';
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
-import { rootReducer } from './backend/root.reducer';
+import { AuthGuard } from './backend/auth/auth.guard';
 import { IState } from './backend/interfaces';
 import { rootEpic } from './backend/root.epic';
-import { AuthGuard } from './backend/auth/auth.guard';
+import { rootReducer } from './backend/root.reducer';
 import { ComponentsModule } from './components/components.module';
-
-import { translations as en } from './locale/en';
 import { translations as de } from './locale/de';
+import { translations as en } from './locale/en';
+import CurrentEnvironment from '../environment';
+import { Environment } from '../environments/default-environment.class';
 
 const initialState = {} as any;
 
@@ -36,7 +36,6 @@ export function provideEnvironment(devTools: DevToolsExtension) {
   imports: [
     RouterModule.forRoot(routes, {
       useHash: false,
-      preloadingStrategy: PreloadAllModules,
     }),
     BrowserModule,
     HttpClientModule,
@@ -72,6 +71,7 @@ export class AppModule {
     @Inject(APP_TRANSLATIONS) translations: any,
     @Inject(LOCALE_ID) locale: string
   ) {
+    registerLocaleData(localeDe, 'de');
     translateService.setDefaultLang(locale);
     translations.forEach((translation: any) => {
       translateService.setTranslation(translation.name, translation.translations, true);

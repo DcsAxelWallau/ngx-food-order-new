@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { UserEditPageComponent } from './user-edit/user-edit-page.component';
@@ -23,6 +23,6 @@ export const routes: Routes = [
     UserFormComponent,
     UserNewPageComponent,
   ],
-  imports: [RouterModule.forChild(routes), CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [RouterModule.forChild(routes), CommonModule, ReactiveFormsModule],
 })
 export class UsersModule {}

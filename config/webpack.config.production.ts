@@ -2,6 +2,7 @@ function buildProductionConfig() {
   const merge = require('webpack-merge');
   const OfflinePlugin = require('offline-plugin');
   const CompressionPlugin = require('compression-webpack-plugin');
+  const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
   const { PurifyPlugin } = require('@angular-devkit/build-optimizer');
   const { EnvironmentPlugin } = require('webpack');
@@ -11,6 +12,7 @@ function buildProductionConfig() {
 
   return merge.smart(commonConfig, {
     mode: 'production',
+    devtool: 'source-map',
 
     entry: {
       main: ['./src/main.ts', './src/service-worker.ts'],
@@ -22,9 +24,27 @@ function buildProductionConfig() {
           test: /\.js$/,
           loader: '@angular-devkit/build-optimizer/webpack-loader',
           options: {
-            sourceMap: false,
+            sourceMap: true,
           },
         },
+      ],
+    },
+
+    optimization: {
+      minimizer: [
+        new UglifyJSPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true,
+          uglifyOptions: {
+            compress: {
+              // conditionals because of @angular/core/http bug
+              conditionals: false,
+              passes: 3,
+            },
+            ecma: 8,
+          },
+        }),
       ],
     },
 

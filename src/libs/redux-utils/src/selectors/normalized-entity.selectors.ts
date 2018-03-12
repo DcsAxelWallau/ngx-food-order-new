@@ -1,6 +1,5 @@
-import { Schema, denormalize } from 'normalizr';
-import { OutputSelector, createSelector } from 'reselect';
-
+import { denormalize, Schema } from 'normalizr';
+import { createSelector, OutputSelector } from 'reselect';
 import { INormalizedEntityState, INormalizedState } from './interfaces';
 
 export type Constructor<T = {}> = new (...args: any[]) => T;

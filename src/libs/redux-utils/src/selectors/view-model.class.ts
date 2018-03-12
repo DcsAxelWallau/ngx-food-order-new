@@ -1,7 +1,4 @@
-import * as curry from 'ramda/src/curry';
-import * as forEach from 'ramda/src/forEach';
-import * as keys from 'ramda/src/keys';
-
+import { curry, forEach, keys } from 'ramda';
 import { Constructor } from './normalized-entity.selectors';
 
 export function generateGetter<T extends object, K extends keyof T>(

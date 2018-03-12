@@ -1,6 +1,7 @@
-import * as __ from 'ramda/src/__';
-import * as compose from 'ramda/src/compose';
+import { __, compose } from 'ramda';
 import { AnyAction } from 'redux';
+import { fetchActions, updateActions } from './current-user.actions';
+import { IUser } from '../models/user.class';
 
 import {
   INormalizedEntityState,
@@ -8,9 +9,6 @@ import {
   asyncUpdateEntityReducerFactory,
   generateNormalizedState,
 } from '@dcs/redux-utils';
-
-import { IUser } from '../models/user.class';
-import { fetchActions, updateActions } from './current-user.actions';
 
 export interface ICurrentUserState extends INormalizedEntityState {
   entities: { users: { [key: string]: IUser } };

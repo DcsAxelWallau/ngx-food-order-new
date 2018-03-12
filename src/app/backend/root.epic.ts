@@ -1,14 +1,15 @@
 import { apiRequestEpic } from '@dcs/ngx-utils';
 import { errorEpic } from '@dcs/redux-utils';
 import { combineEpics } from 'redux-observable';
+import { greetDcsEpic } from './home/home.epics';
+import { redirectAfterProductCreateEpic } from './products/current-product/current-product.epics';
+import { redirectAfterUserCreateEpic } from './users/current-user/current-user.epics';
 
 import {
   loginSuccessEpic,
   redirectAfterAuthenticateEpic,
   redirectAfterLogoutEpic,
 } from './auth/auth.epics';
-import { greetDcsEpic } from './home/home.epics';
-import { redirectAfterUserCreateEpic } from './users/current-user/current-user.epics';
 
 export const rootEpic = combineEpics(
   apiRequestEpic,
@@ -17,5 +18,6 @@ export const rootEpic = combineEpics(
   loginSuccessEpic,
   redirectAfterAuthenticateEpic,
   redirectAfterLogoutEpic,
-  redirectAfterUserCreateEpic
+  redirectAfterUserCreateEpic,
+  redirectAfterProductCreateEpic
 );
