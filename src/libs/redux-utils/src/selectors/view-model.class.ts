@@ -1,21 +1,27 @@
-import * as keys from 'ramda/src/keys';
-import * as forEach from 'ramda/src/forEach';
 import * as curry from 'ramda/src/curry';
+import * as forEach from 'ramda/src/forEach';
+import * as keys from 'ramda/src/keys';
+
+import { Constructor } from './normalized-entity.selectors';
 
 export function generateGetter<T extends object, K extends keyof T>(
   instance: ViewModel<T>,
   key: K
 ) {
-  Object.defineProperty(instance, key, {
-    get() {
-      return instance.getProp(key);
-    },
-    configurable: false,
-    enumerable: true,
-  });
+  if (Object.getOwnPropertyDescriptor(Object.getPrototypeOf(instance), key) === undefined) {
+    Object.defineProperty(instance, key, {
+      get() {
+        return instance.getProp(key);
+      },
+      configurable: true,
+      enumerable: true,
+    });
+  }
 }
 
 export abstract class ViewModel<T extends object> {
+  protected instanceCache: { [key: string]: any } = {};
+
   get loaded(): boolean {
     // naive implementation as default: presence of id
     // overwrite when necessary
@@ -47,5 +53,13 @@ export abstract class ViewModel<T extends object> {
 
   public toObject(): object {
     return { ...(this.props as object) };
+  }
+
+  protected getInstance(key: keyof T, konstructor: Constructor<any>) {
+    if (!this.instanceCache[key]) {
+      this.instanceCache[key] = new konstructor(this.getProp(key));
+    }
+
+    return this.instanceCache[key];
   }
 }

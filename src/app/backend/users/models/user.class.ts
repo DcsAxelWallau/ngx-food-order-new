@@ -1,10 +1,13 @@
 import { ViewModel } from '@dcs/redux-utils';
 
+import { IPlanet, Planet } from './planet.class';
+
 export interface IUser {
   id: string;
   email: string;
   firstname: string;
   lastname: string;
+  planet: IPlanet;
 }
 
 export class User extends ViewModel<IUser> {
@@ -13,6 +16,7 @@ export class User extends ViewModel<IUser> {
     email: '',
     firstname: '',
     lastname: '',
+    planet: { name: '' },
   };
 
   public id: string;
@@ -20,8 +24,14 @@ export class User extends ViewModel<IUser> {
   public firstname: string;
   public lastname: string;
 
+  private planetInstance: Planet;
+
   get name(): string {
     return `${this.firstname} ${this.lastname}`;
+  }
+
+  get planet() {
+    return this.getInstance('planet', Planet);
   }
 
   constructor(props: Partial<IUser>) {

@@ -11,6 +11,7 @@ import { User } from './../../backend/users/models/user.class';
 export class UserFormComponent implements OnChanges {
   @Input() public user: User;
   @Input() public updating: boolean;
+  @Input() public loading: boolean;
   @Input() public error: HttpErrorResponse | null;
   @Output() public onSave: EventEmitter<User> = new EventEmitter();
 
@@ -22,6 +23,7 @@ export class UserFormComponent implements OnChanges {
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      planet: fb.group({ name: [''] }),
     });
   }
 

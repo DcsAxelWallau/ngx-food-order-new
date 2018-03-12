@@ -7,7 +7,16 @@ interface System {
 }
 var System: System;
 
+interface Window {
+  temp: any;
+}
+
 declare module '*.json' {
+  const value: any;
+  export default value;
+}
+
+declare module 'is-primitive' {
   const value: any;
   export default value;
 }

@@ -9,13 +9,18 @@
     <div class="col">
       <label for="input-lastname">Lastname</label>
       <input type="text" id="input-lastname" formControlName="lastname">
-
     </div>
 
     <div class="col">
       <label for="input-email">E-Mail</label>
       <input type="text" id="input-email" formControlName="email">
+    </div>
 
+    <div [formGroup]="form.get('planet')">
+      <div class="col">
+        <label for="input-planet-name">Planet</label>
+        <input type="text" id="input-planet-name" formControlName="name">
+      </div>
     </div>
 
     <div class="col">
@@ -33,3 +38,9 @@
 <div class="updating" *ngIf="updating">
   Saving data ...
 </div>
+
+<div class="loading" *ngIf="loading">
+  Loading ...
+</div>
+
+<a routerLink="/users">back</a>

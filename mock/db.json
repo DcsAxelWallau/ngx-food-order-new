@@ -59,19 +59,28 @@
       "id": 1,
       "firstname": "Arthur",
       "lastname": "Dent",
-      "email": "arthur@earth.com"
+      "email": "arthur@earth.com",
+      "planet": {
+        "name": "Earth"
+      }
     },
     {
       "id": 2,
       "firstname": "Ford",
       "lastname": "Perfect",
-      "email": "ford@betelgeuse.com"
+      "email": "ford@betelgeuse.com",
+      "planet": {
+        "name": "Betelgeuse"
+      }
     },
     {
       "id": 3,
       "email": "trillian@microsoft.com",
       "firstname": "Tricia",
-      "lastname": "McMillan"
+      "lastname": "McMillan",
+      "planet": {
+        "name": "Earth"
+      }
     }
   ]
 }
