@@ -26,11 +26,6 @@ export abstract class ViewModel<T extends object> {
   }
 
   constructor(protected props: Partial<T> = {}) {
-    Object.defineProperty(this, 'props', {
-      enumerable: false,
-      configurable: false,
-    });
-
     const generatePostGetter = curry(generateGetter)(this);
     forEach(generatePostGetter, keys(props));
   }

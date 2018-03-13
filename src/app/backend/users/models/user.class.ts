@@ -1,5 +1,4 @@
 import { ViewModel } from '@dcs/redux-utils';
-
 import { IPlanet, Planet } from './planet.class';
 
 export interface IUser {
@@ -35,7 +34,7 @@ export class User extends ViewModel<IUser> {
   }
 
   constructor(props: Partial<IUser>) {
-    props = props || User.defaults;
+    props = { ...User.defaults, ...props };
     super(props);
   }
 }

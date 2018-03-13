@@ -1,10 +1,9 @@
-import { AnyAction, Store } from 'redux';
+import { AnyAction } from 'redux';
 import { Observable } from 'rxjs/Observable';
 import { filter, map } from 'rxjs/operators';
-
 import { ERROR_ACTION_ADD } from './error.actions';
 
-export function errorEpic<S>(action$: Observable<AnyAction>, _: Store<S>): Observable<AnyAction> {
+export function errorEpic(action$: Observable<AnyAction>): Observable<AnyAction> {
   return action$.pipe(
     filter(action => action.error),
     map(action => {

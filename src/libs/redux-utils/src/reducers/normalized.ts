@@ -1,4 +1,4 @@
-import { __, compose, curry, equals, lensPath, reject, set, view } from 'ramda';
+import { __, compose, curry, equals, lensPath, reject, set, uniq, view } from 'ramda';
 import { AnyAction } from 'redux';
 import { INormalizedCollectionState, INormalizedState } from './../selectors/interfaces';
 import { IAsyncActionNames } from '../actions/generators';
@@ -16,17 +16,17 @@ export const generateNormalizedState = (): INormalizedState => {
 };
 
 export const updateEntity = curry((key: string, action: AnyAction) => {
-  const userLens = lensPath(['entities', key, action.payload.result]);
-  return set(userLens, view(userLens, action.payload));
+  const entityLens = lensPath(['entities', key, action.payload.result]);
+  return set(entityLens, view(entityLens, action.payload));
 });
 
 export const pushIntoResult = curry(
   (state: INormalizedCollectionState, action: AnyAction): INormalizedCollectionState => {
-    return { ...state, result: [...state.result, action.payload.result] };
+    return { ...state, result: uniq([...state.result, action.payload.result]) };
   }
 );
 
-export const removeEntityFromCollection = (state: INormalizedCollectionState, action: AnyAction) =>
+export const removeIdFromResult = (state: INormalizedCollectionState, action: AnyAction) =>
   reject(equals(String(action.payload.id)), state.result);
 
 export const addEntityToCollection = curry(
@@ -116,16 +116,20 @@ export function asyncRemoveFromCollectionReducerFactory<S extends INormalizedCol
     switch (action.type) {
       case actionHandlers.start:
         return Object.assign({}, state, {
-          result: removeEntityFromCollection(state, action),
+          result: removeIdFromResult(state, action),
           updating: true,
           lastState: state,
         });
 
-      case actionHandlers.error:
-        return Object.assign({}, state.lastState as S, { error: action.payload, updating: false });
-
       case actionHandlers.success:
         return Object.assign({}, state, { lastState: null, updating: false });
+
+      case actionHandlers.error:
+        return Object.assign({}, state.lastState as S, {
+          error: action.payload,
+          updating: false,
+          lastState: null,
+        });
     }
 
     return state;
@@ -142,7 +146,7 @@ export function normalizedCollectionReducerFactory<S extends INormalizedCollecti
 ) {
   const fetchReducer = asyncFetchReducerFactory(initialState, fetchActions);
   const removeFromCollectionReducer = asyncRemoveFromCollectionReducerFactory(deleteActions);
-  const updateUserEntity = updateEntity(key);
+  const updateCollectionEntity = updateEntity(key);
 
   return (state: S = initialState, action: AnyAction): S => {
     state = fetchReducer(state, action);
@@ -151,7 +155,7 @@ export function normalizedCollectionReducerFactory<S extends INormalizedCollecti
     switch (action.type) {
       // add custom action handlers here
       case updateActions.success:
-        return updateUserEntity(action)(state) as S;
+        return updateCollectionEntity(action)(state) as S;
 
       case createActions.success:
         return addEntityToCollection(key, state, action) as S;
