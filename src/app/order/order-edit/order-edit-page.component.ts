@@ -21,10 +21,10 @@ import { fetch, update } from '../../backend/order/current-order/current-order.a
       [order]="order$ | async"
       [products]="products$ | async"
       [users]="users$ | async"
-      [updating]="updating$ | async"
-      [error]="error$ | async"
       [loading]="ordersLoading$ | async"
       [loaded]="ordersLoaded$ | async"
+      [updating]="updating$ | async"
+      [error]="error$ | async"
       (onFormChange)="updateState($event)"
     ></dcs-order-form>
   `,

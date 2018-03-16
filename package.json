@@ -31,7 +31,8 @@
     "version": "run-s  build:production changelog && git add CHANGELOG.md",
     "postversion": "git push --no-verify && git push --no-verify --tags",
     "postinstall": "ts-node src/libs/scripts/patch-sideeffects.ts",
-    "backend:mock": "json-server mock/db.json --port 3001 --delay 500"
+    "backend:mock": "json-server mock/db.json --port 3001 --delay 500",
+    "stats": "sloc --format cli-table --exclude 'libs/.*' src"
   },
   "keywords": [],
   "author": "Marc Remolt <marc.remolt@dcs-fuerth.de>",
@@ -125,6 +126,7 @@
     "redux-persist": "^5.9.1",
     "reselect": "^3.0.1",
     "rxjs": "^5.5.7",
+    "sloc": "^0.2.0",
     "uuid": "^3.2.1",
     "zone.js": "^0.8.20"
   },

@@ -1,7 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 import { User } from './../../backend/users/models/user.class';
 
 @Component({
@@ -12,7 +10,7 @@ export class UserFormComponent implements OnChanges {
   @Input() public user: User;
   @Input() public updating: boolean;
   @Input() public loading: boolean;
-  @Input() public error: HttpErrorResponse | null;
+  @Input() public error: any;
   @Output() public onSave: EventEmitter<User> = new EventEmitter();
 
   public form: FormGroup;
