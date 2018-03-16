@@ -6,7 +6,7 @@ export default class ProductionEnvironment extends Environment {
   public throwOnSchemaError = true;
   public autoUpdate: IAutoUpdateSettings = 'confirm';
   public updateMessage = 'Updates available, reload page now?';
-  public pageTitle = 'DCS Angular Starter';
+  public pageTitle = 'DCS Food Order';
   public base = '/';
 
   // public additionalEnhancers: GenericStoreEnhancer[] = [];

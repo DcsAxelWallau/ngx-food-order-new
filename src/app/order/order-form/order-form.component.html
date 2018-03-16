@@ -1,47 +1,53 @@
-<form [formGroup]="form" *ngIf="!order.completed && loaded">
-  <table>
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>User</th>
-        <th>Number of Products</th>
-        <th>Price</th>
-        <th>&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of order.items; let i = index; trackBy:trackByIndex" [formGroup]="getItemFormForIndex(i)">
-        <td>
-          <select formControlName="productId">
-            <option *ngFor="let product of products;" [value]="product.id">{{ product.label }}</option>
-          </select>
-        </td>
-        <td>
-          <select formControlName="userId">
-            <option *ngFor="let user of users;" [value]="user.id">{{ user.name }}</option>
-          </select>
-          <td>
-            <input type="number" min="0" formControlName="numberOfProducts">
-          </td>
-          <td>{{ item.price | currency:'EUR':'symbol' }}</td>
-          <td>
-            <button type="button" (click)="deleteItem(i)">Delete</button>
-          </td>
-      </tr>
-      <tr>
-        <td colspan="3">Sum</td>
-        <td>{{ order.price | currency:'EUR':'symbol' }}</td>
-      </tr>
-    </tbody>
+<div *ngIf="!order.completed && loaded">
+  <h2>Edit Order</h2>
 
-  </table>
+  <form [formGroup]="form">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>User</th>
+          <th>Number of Products</th>
+          <th>Price</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of order.items; let i = index; trackBy:trackByIndex" [formGroup]="getItemFormForIndex(i)">
+          <td>
+            <select formControlName="productId">
+              <option *ngFor="let product of products;" [value]="product.id">{{ product.label }}</option>
+            </select>
+          </td>
+          <td>
+            <select formControlName="userId">
+              <option *ngFor="let user of users;" [value]="user.id">{{ user.name }}</option>
+            </select>
+            <td>
+              <input type="number" min="0" formControlName="numberOfProducts">
+            </td>
+            <td>{{ item.price | currency:'EUR':'symbol' }}</td>
+            <td>
+              <button type="button" (click)="deleteItem(i)">Delete</button>
+            </td>
+        </tr>
+        <tr>
+          <td colspan="3">Sum</td>
+          <td>{{ order.price | currency:'EUR':'symbol' }}</td>
+        </tr>
+      </tbody>
 
-  <button type="button" (click)="addRow()">Add Row</button>
-  <button type="button" (click)="completeForm()">Complete Order</button>
-</form>
+    </table>
+
+    <button type="button" (click)="addRow()">Add Row</button>
+    <button type="button" (click)="completeForm()">Complete Order</button>
+  </form>
+</div>
 
 
 <div *ngIf="order.completed && loaded">
+  <h2>Show Order</h2>
+
   <table>
     <thead>
       <tr>
