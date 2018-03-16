@@ -1,13 +1,16 @@
-import { __, compose } from 'ramda';
 import { AnyAction } from 'redux';
-import { fetchActions, updateActions } from './current-product.actions';
 import { IProduct } from '../models/product.class';
+import {
+  fetchActions,
+  createActions,
+  updateActions,
+  deleteActions,
+} from './current-product.actions';
 
 import {
   INormalizedEntityState,
-  asyncFetchReducerFactory,
-  asyncUpdateEntityReducerFactory,
   generateNormalizedState,
+  normalizedEntityReducerFactory,
 } from '@dcs/redux-utils';
 
 export interface ICurrentProductState extends INormalizedEntityState {
@@ -20,10 +23,21 @@ export const initialState: ICurrentProductState = Object.freeze({
   entities: { products: {} },
 });
 
-const fetchReducer = asyncFetchReducerFactory(initialState, fetchActions);
-const updateReducer = asyncUpdateEntityReducerFactory(initialState, updateActions);
+export const currentProductDefaultReducer = normalizedEntityReducerFactory(
+  initialState,
+  fetchActions,
+  createActions,
+  updateActions,
+  deleteActions
+);
 
 export const currentProduct = (
   state: ICurrentProductState = initialState,
   action: AnyAction
-): ICurrentProductState => compose(fetchReducer(__, action), updateReducer(__, action))(state);
+): ICurrentProductState => {
+  switch (action.type) {
+  // overwrite or add any actions here, just default redux
+  }
+
+  return currentProductDefaultReducer(state, action);
+};

@@ -1,39 +1,80 @@
 {
-  "order": {
-    "items": [
-      {
-        "productId": 1,
-        "userId": 1,
-        "numberOfProducts": 2
-      },
-      {
-        "productId": 3,
-        "userId": 1,
-        "numberOfProducts": 4
-      },
-      {
-        "productId": 2,
-        "userId": "2",
-        "numberOfProducts": 1
-      },
-      {
-        "productId": "4",
-        "userId": "2",
-        "numberOfProducts": 5
-      },
-      {
-        "productId": "4",
-        "userId": "1",
-        "numberOfProducts": 1
-      }
-    ]
-  },
+  "orders": [
+    {
+      "id": 1,
+      "completed": false,
+      "items": [
+        {
+          "productId": 1,
+          "userId": 1,
+          "numberOfProducts": 5
+        },
+        {
+          "productId": 3,
+          "userId": 1,
+          "numberOfProducts": 4
+        },
+        {
+          "productId": 2,
+          "userId": 2,
+          "numberOfProducts": 1
+        },
+        {
+          "productId": 4,
+          "userId": 2,
+          "numberOfProducts": 5
+        },
+        {
+          "productId": "4",
+          "userId": "3",
+          "numberOfProducts": 3
+        },
+        {
+          "productId": "3",
+          "userId": "2",
+          "numberOfProducts": 4
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "completed": false,
+      "items": [
+        {
+          "productId": "2",
+          "userId": "2",
+          "numberOfProducts": 3
+        },
+        {
+          "productId": "4",
+          "userId": "1",
+          "numberOfProducts": 6
+        },
+        {
+          "productId": "3",
+          "userId": "3",
+          "numberOfProducts": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "completed": true,
+      "items": [
+        {
+          "productId": "3",
+          "userId": "2",
+          "numberOfProducts": 4
+        }
+      ]
+    }
+  ],
   "products": [
     {
       "id": 1,
       "articleId": "a-11201",
       "label": "\"Falscher Hase\"-Pfanne",
-      "price": 7.75
+      "price": 27.75
     },
     {
       "id": 2,

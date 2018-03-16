@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-
+import { PresentationalComponent } from '@dcs/ngx-utils';
 import { User } from '../../backend/users/models/user.class';
 
 @Component({
@@ -8,7 +8,7 @@ import { User } from '../../backend/users/models/user.class';
   styleUrls: ['./users-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersListComponent {
+export class UsersListComponent extends PresentationalComponent {
   @Input() public users: User[];
   @Input() public loading: boolean;
   @Input() public updating: boolean;

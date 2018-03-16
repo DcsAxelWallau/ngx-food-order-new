@@ -44,16 +44,10 @@ const cssLoader = [
 module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
-    mainFields: ['es2015', 'module', 'main'],
+    mainFields: ['es2015', 'module', 'browser', 'main'],
     alias: {
       ...rxPaths(),
       '@fortawesome/fontawesome-free-solid$': '@fortawesome/fontawesome-free-solid/shakable.es.js',
-      'transit-immutable-js': path.resolve(root, 'config', 'resource-override.js'),
-      'date-fns': path.resolve(root, 'config', 'resource-override.js'),
-      // tslint:disable-next-line:object-literal-key-quotes
-      ajv: path.resolve(root, 'config', 'resource-override.js'),
-      // tslint:disable-next-line:object-literal-key-quotes
-      validator: path.resolve(root, 'config', 'resource-override.js'),
     },
   },
   entry: {

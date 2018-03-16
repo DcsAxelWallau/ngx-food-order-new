@@ -20,3 +20,8 @@ declare module 'is-primitive' {
   const value: any;
   export default value;
 }
+
+declare module 'hash-it' {
+  const value: any;
+  export default value;
+}

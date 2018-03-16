@@ -1,0 +1,38 @@
+<h2>Orders List</h2>
+
+<table *ngIf="showData; else loader">
+  <thead>
+    <tr>
+      <th>Items</th>
+      <th>Price</th>
+      <th>Completed</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders;">
+      <td>{{ order.numberOfItems }}</td>
+      <td>{{ order.price | currency:'EUR':'symbol' }}</td>
+      <td>{{ order.completed }}</td>
+      <td>
+        <a routerLink="/order/{{ order.id }}/edit">{{ order.completed ? 'show' : 'edit' }}</a>&nbsp;
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #loader>
+  <div>loading...</div>
+</ng-template>
+
+<div class="updating" *ngIf="updating">
+  Deleting product ...
+</div>
+
+<div class="error" *ngIf="error">
+  <p>Error!</p>
+  <p>Status: {{ error.status }}</p>
+  <p>Message: {{ error.message }}</p>
+</div>
+
+<button type="button" (click)="onOrderCreate.next()">Create Order</button>

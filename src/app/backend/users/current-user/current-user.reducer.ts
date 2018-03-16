@@ -1,13 +1,11 @@
-import { __, compose } from 'ramda';
 import { AnyAction } from 'redux';
-import { fetchActions, updateActions } from './current-user.actions';
+import { createActions, deleteActions, fetchActions, updateActions } from './current-user.actions';
 import { IUser } from '../models/user.class';
 
 import {
   INormalizedEntityState,
-  asyncFetchReducerFactory,
-  asyncUpdateEntityReducerFactory,
   generateNormalizedState,
+  normalizedEntityReducerFactory,
 } from '@dcs/redux-utils';
 
 export interface ICurrentUserState extends INormalizedEntityState {
@@ -20,10 +18,21 @@ export const initialState: ICurrentUserState = Object.freeze({
   entities: { users: {} },
 });
 
-const fetchReducer = asyncFetchReducerFactory(initialState, fetchActions);
-const updateReducer = asyncUpdateEntityReducerFactory(initialState, updateActions);
+export const currentUserDefaultReducer = normalizedEntityReducerFactory(
+  initialState,
+  fetchActions,
+  createActions,
+  updateActions,
+  deleteActions
+);
 
 export const currentUser = (
   state: ICurrentUserState = initialState,
   action: AnyAction
-): ICurrentUserState => compose(fetchReducer(__, action), updateReducer(__, action))(state);
+): ICurrentUserState => {
+  switch (action.type) {
+  // overwrite or add any actions here, just default redux
+  }
+
+  return currentUserDefaultReducer(state, action);
+};

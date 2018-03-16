@@ -1,7 +1,7 @@
-import { Schema, denormalize } from 'normalizr';
-import { OutputSelector, createSelector } from 'reselect';
-
+import { denormalize, Schema } from 'normalizr';
+import { createSelector, OutputSelector } from 'reselect';
 import { INormalizedCollectionState } from './interfaces';
+
 import {
   Constructor,
   ISubStateSelector,

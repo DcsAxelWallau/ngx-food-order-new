@@ -1,0 +1,91 @@
+<form [formGroup]="form" *ngIf="!order.completed && loaded">
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>User</th>
+        <th>Number of Products</th>
+        <th>Price</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of order.items; let i = index; trackBy:trackByIndex" [formGroup]="getItemFormForIndex(i)">
+        <td>
+          <select formControlName="productId">
+            <option *ngFor="let product of products;" [value]="product.id">{{ product.label }}</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="userId">
+            <option *ngFor="let user of users;" [value]="user.id">{{ user.name }}</option>
+          </select>
+          <td>
+            <input type="number" min="0" formControlName="numberOfProducts">
+          </td>
+          <td>{{ item.price | currency:'EUR':'symbol' }}</td>
+          <td>
+            <button type="button" (click)="deleteItem(i)">Delete</button>
+          </td>
+      </tr>
+      <tr>
+        <td colspan="3">Sum</td>
+        <td>{{ order.price | currency:'EUR':'symbol' }}</td>
+      </tr>
+    </tbody>
+
+  </table>
+
+  <button type="button" (click)="addRow()">Add Row</button>
+  <button type="button" (click)="completeForm()">Complete Order</button>
+</form>
+
+
+<div *ngIf="order.completed && loaded">
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>User</th>
+        <th>Number of Products</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of order.items; let i = index; trackBy:trackByIndex" [formGroup]="getItemFormForIndex(i)">
+        <td>
+          {{ item.product.label }}
+        </td>
+        <td>
+          {{ item.user.name }}
+        </td>
+        <td>
+          {{ item.numberOfProducts }}
+        </td>
+        <td>{{ item.price | currency:'EUR':'symbol' }}</td>
+      </tr>
+      <tr>
+        <td colspan="3">Sum</td>
+        <td>{{ order.price | currency:'EUR':'symbol' }}</td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>
+
+<a routerLink="/order">back</a>
+
+
+<div class="loading" *ngIf="loading">
+  loading...
+</div>
+
+<div class="updating" *ngIf="updating">
+  Updating Order ...
+</div>
+
+<div class="error" *ngIf="error">
+  <p>Error!</p>
+  <p>Status: {{ error.status }}</p>
+  <p>Message: {{ error.message }}</p>
+</div>

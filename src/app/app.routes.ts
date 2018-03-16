@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-
 import { AuthGuard } from './backend/auth/auth.guard';
 
 export const routes: Routes = [
@@ -8,4 +7,5 @@ export const routes: Routes = [
   { path: 'auth', loadChildren: './auth/auth.module#AuthModule' },
   { path: 'users', loadChildren: './users/users.module#UsersModule' },
   { path: 'products', loadChildren: './products/products.module#ProductsModule' },
+  { path: 'order', loadChildren: './order/order.module#OrderModule' },
 ];

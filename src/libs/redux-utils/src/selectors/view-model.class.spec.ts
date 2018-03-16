@@ -25,7 +25,7 @@ interface IPerson {
 
 // tslint:disable-next-line:max-classes-per-file
 class Person extends ViewModel<IPerson> {
-  protected static readonly defaults = {
+  protected static readonly defaults: IPerson = {
     id: '42',
     firstname: '',
     lastname: '',

@@ -14,7 +14,7 @@
     "object-literal-sort-keys": false,
     "only-arrow-functions": [false],
     "ordered-imports": [false],
-    "quotemark": [true, "single"],
+    "quotemark": [true, "single", "avoid-template", "avoid-escape"],
     "trailing-comma": [false],
     "whitespace": [
       true,

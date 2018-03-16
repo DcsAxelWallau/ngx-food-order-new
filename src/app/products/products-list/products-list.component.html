@@ -10,7 +10,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let product of products;">
+    <tr *ngFor="let product of products; trackBy:trackByIdentifier">
       <td>{{ product.articleId }}</td>
       <td>{{ product.label }}</td>
       <td>{{ product.price | currency:'EUR':'symbol' }}</td>
@@ -32,8 +32,8 @@
 
 <div class="error" *ngIf="error">
   <p>Error!</p>
-  <p>Status: {{ (error || {}).status }}</p>
-  <p>Message: {{ (error || {}).message }}</p>
+  <p>Status: {{ error.status }}</p>
+  <p>Message: {{ error.message }}</p>
 </div>
 
 

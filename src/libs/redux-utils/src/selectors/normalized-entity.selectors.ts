@@ -20,10 +20,9 @@ export function rawEntitySelectorFactory<S, E>(
   subStateSelector: ISubStateSelector<S>,
   schema: Schema
 ): OutputSelector<S, E, (res: INormalizedEntityState) => E> {
-  return createSelector(
-    [subStateSelector],
-    subState => denormalize(subState.result, schema, subState.entities) as E
-  );
+  return createSelector([subStateSelector], subState => {
+    return denormalize(subState.result, schema, subState.entities) as E;
+  });
 }
 
 export function entitySelectorFactory<S, T>(

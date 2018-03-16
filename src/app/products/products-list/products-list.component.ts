@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PresentationalComponent } from '@dcs/ngx-utils';
 import { Product } from './../../backend/products/models/product.class';
 
 @Component({
@@ -6,7 +7,7 @@ import { Product } from './../../backend/products/models/product.class';
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss'],
 })
-export class ProductsListComponent {
+export class ProductsListComponent extends PresentationalComponent {
   @Input() public products: Product[];
   @Input() public loading: boolean;
   @Input() public updating: boolean;

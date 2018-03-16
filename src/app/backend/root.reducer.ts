@@ -6,6 +6,7 @@ import { persistReducer } from 'redux-persist';
 import { auth } from './auth/auth.reducer';
 import { home } from './home/home.reducer';
 import { IState } from './interfaces';
+import { order } from './order/order.reducer';
 import { products } from './products/product.reducer';
 import { users } from './users/users.reducer';
 
@@ -25,6 +26,7 @@ export const rootReducer: Reducer<IState> = persistReducer(
       users,
       auth,
       products,
+      order,
     })
   )
 );

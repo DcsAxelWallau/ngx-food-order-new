@@ -1,7 +1,22 @@
-import { __, compose, curry, equals, lensPath, reject, set, uniq, view } from 'ramda';
 import { AnyAction } from 'redux';
-import { INormalizedCollectionState, INormalizedState } from './../selectors/interfaces';
 import { IAsyncActionNames } from '../actions/generators';
+import {
+  __,
+  compose,
+  curry,
+  equals,
+  lensPath,
+  reject,
+  set,
+  uniq,
+  view,
+  mergeDeepRight,
+} from 'ramda';
+import {
+  INormalizedCollectionState,
+  INormalizedState,
+  INormalizedEntityState,
+} from './../selectors/interfaces';
 
 export const generateNormalizedState = (): INormalizedState => {
   return {
@@ -84,14 +99,17 @@ export function asyncFetchReducerFactory<S extends INormalizedState>(
   });
 }
 
-export function asyncUpdateEntityReducerFactory<S extends INormalizedState>(
+export function asyncSaveEntityReducerFactory<S extends INormalizedState>(
   initialState: S,
   actionHandlers: IAsyncActionNames
 ) {
   return curry((state: S, action: AnyAction): S => {
     switch (action.type) {
-      // add custom action handlers here
       case actionHandlers.start:
+        if (state.lastState) {
+          // prevent lastState in lastState in lastState ...
+          state = Object.assign({}, state, { lastState: null });
+        }
         return Object.assign({}, state, action.payload, {
           updating: true,
           lastState: state,
@@ -100,6 +118,29 @@ export function asyncUpdateEntityReducerFactory<S extends INormalizedState>(
 
       case actionHandlers.success:
         return Object.assign({}, initialState, action.payload, { loaded: true, lastState: null });
+
+      case actionHandlers.error:
+        return Object.assign({}, state.lastState as S, { error: action.payload, lastState: null });
+    }
+
+    return state;
+  });
+}
+
+export function asyncDeleteEntityReducerFactory<S extends INormalizedState>(
+  initialState: S,
+  actionHandlers: IAsyncActionNames
+) {
+  return curry((state: S, action: AnyAction): S => {
+    switch (action.type) {
+      case actionHandlers.start:
+        return Object.assign({}, state, {
+          updating: true,
+          error: null,
+        });
+
+      case actionHandlers.success:
+        return initialState;
 
       case actionHandlers.error:
         return Object.assign({}, state.lastState as S, { error: action.payload, lastState: null });
@@ -146,21 +187,41 @@ export function normalizedCollectionReducerFactory<S extends INormalizedCollecti
 ) {
   const fetchReducer = asyncFetchReducerFactory(initialState, fetchActions);
   const removeFromCollectionReducer = asyncRemoveFromCollectionReducerFactory(deleteActions);
-  const updateCollectionEntity = updateEntity(key);
 
   return (state: S = initialState, action: AnyAction): S => {
     state = fetchReducer(state, action);
     state = removeFromCollectionReducer(state, action) as S;
 
     switch (action.type) {
-      // add custom action handlers here
       case updateActions.success:
-        return updateCollectionEntity(action)(state) as S;
+        return mergeDeepRight(state, { entities: action.payload.entities }) as S;
 
       case createActions.success:
         return addEntityToCollection(key, state, action) as S;
     }
 
     return state;
+  };
+}
+
+export function normalizedEntityReducerFactory<S extends INormalizedEntityState>(
+  initialState: S,
+  fetchActions: IAsyncActionNames,
+  createActions: IAsyncActionNames,
+  updateActions: IAsyncActionNames,
+  deleteActions: IAsyncActionNames
+) {
+  const fetchReducer = asyncFetchReducerFactory(initialState, fetchActions);
+  const createReducer = asyncSaveEntityReducerFactory(initialState, createActions);
+  const updateReducer = asyncSaveEntityReducerFactory(initialState, updateActions);
+  const deleteReducer = asyncDeleteEntityReducerFactory(initialState, deleteActions);
+
+  return (state: S = initialState, action: AnyAction): S => {
+    return compose(
+      deleteReducer(__, action),
+      updateReducer(__, action),
+      createReducer(__, action),
+      fetchReducer(__, action)
+    )(state);
   };
 }

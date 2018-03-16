@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users;">
+    <tr *ngFor="let user of users; trackBy:trackByIdentifier">
       <td>{{ user.name }}</td>
       <td>{{ user.email }}</td>
       <td>
@@ -30,8 +30,8 @@
 
 <div class="error" *ngIf="error">
   <p>Error!</p>
-  <p>Status: {{ (error || {}).status }}</p>
-  <p>Message: {{ (error || {}).message }}</p>
+  <p>Status: {{ error.status }}</p>
+  <p>Message: {{ error.message }}</p>
 </div>
 
 

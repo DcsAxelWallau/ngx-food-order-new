@@ -12,7 +12,7 @@ import {
   asyncFetchErrorReducer,
   asyncFetchCompleteReducer,
   asyncFetchReducerFactory,
-  asyncUpdateEntityReducerFactory,
+  asyncSaveEntityReducerFactory,
   asyncRemoveFromCollectionReducerFactory,
   normalizedCollectionReducerFactory,
 } from './normalized';
@@ -305,7 +305,7 @@ describe('reducers on normalized state', () => {
       let newState: INormalizedCollectionState;
 
       beforeAll(() => {
-        subject = asyncUpdateEntityReducerFactory(initialState, updateActions);
+        subject = asyncSaveEntityReducerFactory(initialState, updateActions);
       });
 
       describe('startAction', () => {
@@ -371,7 +371,11 @@ describe('reducers on normalized state', () => {
       });
 
       describe('errorAction', () => {
-        const prevState = { ...initialState, lastState: { result: 'TESTS' } as any, error: null };
+        const prevState: INormalizedCollectionState = {
+          ...initialState,
+          lastState: { result: 'TESTS' } as any,
+          error: null,
+        };
 
         beforeEach(() => {
           newState = subject(prevState, {

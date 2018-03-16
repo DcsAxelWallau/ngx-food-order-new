@@ -18,5 +18,5 @@ export function setupStore<T>(
     rootReducer,
     initialState,
     compose(applyMiddleware(...middleware), ...enhancers)
-  );
+  ) as Store<T>;
 }

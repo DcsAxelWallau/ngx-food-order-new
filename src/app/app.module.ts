@@ -71,7 +71,7 @@ export class AppModule {
     @Inject(APP_TRANSLATIONS) translations: any,
     @Inject(LOCALE_ID) locale: string
   ) {
-    registerLocaleData(localeDe, 'de');
+    registerLocaleData(localeDe, locale);
     translateService.setDefaultLang(locale);
     translations.forEach((translation: any) => {
       translateService.setTranslation(translation.name, translation.translations, true);

@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-
-import { IState } from '../../backend/interfaces';
 import { logout } from '../../backend/auth/auth.actions';
+import { IState } from '../../backend/interfaces';
 
 @Component({
   selector: 'dcs-main-navigation',
   templateUrl: './main-navigation.component.html',
   styleUrls: ['./main-navigation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainNavigationComponent {
   constructor(private store: NgRedux<IState>, private translate: TranslateService) {}
