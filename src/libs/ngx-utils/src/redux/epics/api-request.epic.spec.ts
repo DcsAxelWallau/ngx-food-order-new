@@ -1,6 +1,22 @@
+import { apiRequestEpic } from '@dcs/ngx-utils';
 import * as lolex from 'lolex';
-import { IApiActionHandlers } from './../interfaces';
-import { defaultDataProcessor, getHandlers, getUrl } from './api-request.epic';
+import { schema } from 'normalizr';
+import { AnyAction } from 'redux';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { _throw } from 'rxjs/observable/throw';
+import { toArray } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
+import { IApiAction, IApiActionHandlers } from './../interfaces';
+import { API_ACTION } from './../tokens';
+import {} from 'rxjs/observable/throw';
+import {
+  defaultDataProcessor,
+  getHandlers,
+  getUrl,
+  normalizeData,
+  getRequestPayload,
+} from './api-request.epic';
 
 describe('apiRequestEpic', () => {
   describe('getUrl', () => {
@@ -104,6 +120,120 @@ describe('apiRequestEpic', () => {
   describe('defaultDataProcessor', () => {
     it('returns the original data', () => {
       expect(defaultDataProcessor(42)).toEqual(42);
+    });
+  });
+
+  describe('normalizeData', () => {
+    describe('if no schema is given', () => {
+      it('returns the original data', () => {
+        const data = { test: 'data' };
+        const action: any = { payload: {} };
+        expect(normalizeData(action, data)).toBe(data);
+      });
+    });
+
+    describe('if a schema is given', () => {
+      it('returns normalized data', () => {
+        const data = { id: '42', name: 'Arthur' };
+        const action: any = { payload: { normalizrSchema: new schema.Entity('users') } };
+
+        expect(normalizeData(action, data)).toEqual({
+          entities: { users: { 42: data } },
+          result: '42',
+        });
+      });
+    });
+  });
+
+  describe('getRequestPayload', () => {
+    it('returns the normalized requestPayload', () => {
+      const data = { id: '42', name: 'Arthur' };
+      const action: any = {
+        payload: {
+          request: { options: { body: data } },
+          normalizrSchema: new schema.Entity('users'),
+        },
+      };
+
+      expect(getRequestPayload(action)).toEqual({
+        entities: { users: { 42: data } },
+        result: '42',
+      });
+    });
+  });
+
+  describe('apiRequestEpic', () => {
+    const environment: any = {
+      apiUrl: 'http://www.example.com/api',
+    };
+    const mockData = { id: '42', name: 'Arthur' };
+    const action: IApiAction = {
+      type: API_ACTION,
+      payload: {
+        request: {
+          method: 'GET',
+          url: 'users',
+        },
+        handlers: 'USERS_FETCH',
+      },
+    };
+
+    let http: any;
+    let actions$: Subject<IApiAction>;
+    let subject: Observable<AnyAction>;
+    let clock: lolex.LolexClock<number>;
+
+    beforeEach(() => {
+      clock = lolex.install();
+      actions$ = new Subject();
+      const mockRequest = jest.fn().mockImplementation(() => {
+        return of(mockData);
+      });
+      http = { request: mockRequest };
+      subject = apiRequestEpic(actions$, {} as any, { environment, http });
+    });
+
+    afterEach(() => {
+      actions$.complete();
+      clock.uninstall();
+    });
+
+    it('makes the http request', () => {
+      subject.pipe(toArray()).subscribe(resultAction => {
+        const [start, success, complete] = resultAction;
+
+        expect(start).toEqual({ type: 'USERS_FETCH_START', payload: null, meta: {} });
+        expect(success).toEqual({
+          type: 'USERS_FETCH_SUCCESS',
+          payload: { id: '42', name: 'Arthur' },
+          meta: { updatedAt: new Date() },
+        });
+        expect(complete).toEqual({ type: 'USERS_FETCH_COMPLETE', meta: {} });
+      });
+      actions$.next(action);
+    });
+
+    it('calls the error cb on error', () => {
+      const mockRequest = jest.fn().mockImplementation(() => {
+        return _throw('NOOOOOOOOO');
+      });
+      http = { request: mockRequest };
+      subject = apiRequestEpic(actions$, {} as any, { environment, http });
+
+      subject.pipe(toArray()).subscribe(resultAction => {
+        const [start, success, complete] = resultAction;
+
+        expect(start).toEqual({ type: 'USERS_FETCH_START', payload: null, meta: {} });
+        expect(success).toEqual({
+          type: 'USERS_FETCH_ERROR',
+          payload: 'NOOOOOOOOO',
+          meta: {},
+          error: true,
+        });
+        expect(complete).toEqual({ type: 'USERS_FETCH_COMPLETE', meta: {} });
+      });
+
+      actions$.next(action);
     });
   });
 });

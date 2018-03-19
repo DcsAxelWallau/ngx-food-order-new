@@ -1,8 +1,6 @@
-import { AnyAction } from 'redux';
-
 import { API_ACTION, IApiAction } from '@dcs/ngx-utils';
 import { generateAsyncActionNames } from '@dcs/redux-utils';
-
+import { AnyAction } from 'redux';
 import { User } from './../models/user.class';
 import { userSchema } from './current-user.schema';
 

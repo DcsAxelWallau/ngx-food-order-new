@@ -1,18 +1,17 @@
-import { IState } from '../interfaces';
+import { IUser } from './../users/models/user.class';
 import { IAuthState } from './auth.reducer';
+import { IState } from '../interfaces';
 
-export function loggedInUserSelector(state: IState): boolean {
-  return state.auth.entity as any;
-}
+export const subStateSelector = (state: IState): IAuthState => state.auth;
 
-export function loadedSelector(state: IState): boolean {
-  return state.auth.loaded;
-}
+export const loggedInUserSelector = (state: IState): IUser =>
+  subStateSelector(state).entity as IUser;
 
-export function authFailedSelector(state: IState): boolean {
-  return state.auth.entity === undefined && state.auth.loaded === true;
-}
+export const isLoggedInSelector = (state: IState): boolean => !!subStateSelector(state).entity;
 
-export function subStateSelector(state: IState): IAuthState {
-  return state.auth;
-}
+export const loadedSelector = (state: IState): boolean => subStateSelector(state).loaded;
+
+export const authFailedSelector = (state: IState): boolean => {
+  const subState = subStateSelector(state);
+  return subState.entity === undefined && subState.loaded === true;
+};

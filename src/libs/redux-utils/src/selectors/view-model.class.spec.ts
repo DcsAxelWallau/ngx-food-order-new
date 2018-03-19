@@ -21,6 +21,7 @@ interface IPerson {
   firstname: string;
   lastname: string;
   planet: IPlanet | null;
+  planets: IPlanet[];
 }
 
 // tslint:disable-next-line:max-classes-per-file
@@ -30,6 +31,7 @@ class Person extends ViewModel<IPerson> {
     firstname: '',
     lastname: '',
     planet: null,
+    planets: [],
   };
 
   public id: string;
@@ -38,6 +40,10 @@ class Person extends ViewModel<IPerson> {
 
   get planet() {
     return this.getInstance('planet', Planet);
+  }
+
+  get planets() {
+    return this.getInstance('planets', Planet, true);
   }
 
   constructor(args?: Partial<IPerson>) {
@@ -49,7 +55,7 @@ describe('ViewModel', () => {
   let subject: Person;
 
   beforeEach(() => {
-    subject = new Person({ firstname: 'Arthur', lastname: 'Dent' });
+    subject = new Person({ firstname: 'Arthur', lastname: 'Dent', planets: [{ name: 'EARTH' }] });
   });
 
   it('creates getters for all attributes', () => {
@@ -109,7 +115,9 @@ describe('ViewModel', () => {
   describe('toJSON', () => {
     it('returns a clone of the props attribute', () => {
       const json = subject.toJSON();
-      expect(json).toEqual('{"id":"42","firstname":"Arthur","lastname":"Dent","planet":null}');
+      expect(json).toEqual(
+        '{"id":"42","firstname":"Arthur","lastname":"Dent","planet":null,"planets":[{"name":"EARTH"}]}'
+      );
     });
   });
 
@@ -134,6 +142,28 @@ describe('ViewModel', () => {
 
     it('gives access to the props data', () => {
       expect(subject.planet.name).toEqual('Earth');
+    });
+
+    describe('for a collection', () => {
+      it('creates a class instance for each item in raw data', () => {
+        expect(subject.planets[0]).toBeInstanceOf(Planet);
+      });
+
+      it('caches the instance', () => {
+        expect(subject.planets).toBe(subject.planets);
+        expect(subject.planets[0]).toBe(subject.planets[0]);
+      });
+
+      it('gives access to the props data', () => {
+        expect(subject.planets[0].name).toEqual('EARTH');
+      });
+    });
+  });
+
+  describe('identifier', () => {
+    it('returns the hash code of the props attribute', () => {
+      expect(subject.identifier).toEqual(711788893);
+      expect(subject.identifier).toEqual(711788893);
     });
   });
 });

@@ -1,6 +1,9 @@
-import { NgRedux } from '@angular-redux/store';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NgRedux, select } from '@angular-redux/store';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ContainerComponent } from '@dcs/ngx-utils';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs/Observable';
+import { isLoggedInSelector } from './../../backend/auth/auth.selectors';
 import { logout } from '../../backend/auth/auth.actions';
 import { IState } from '../../backend/interfaces';
 
@@ -10,8 +13,21 @@ import { IState } from '../../backend/interfaces';
   styleUrls: ['./main-navigation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainNavigationComponent {
-  constructor(private store: NgRedux<IState>, private translate: TranslateService) {}
+export class MainNavigationComponent extends ContainerComponent {
+  public isLoggedIn: boolean;
+  @select(isLoggedInSelector) private isLoggedIn$: Observable<boolean>;
+
+  constructor(
+    private store: NgRedux<IState>,
+    private translate: TranslateService,
+    private cd: ChangeDetectorRef
+  ) {
+    super();
+    this.subscribeToObservable(this.isLoggedIn$, isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
+      this.cd.markForCheck();
+    });
+  }
 
   public logout() {
     this.store.dispatch(logout());

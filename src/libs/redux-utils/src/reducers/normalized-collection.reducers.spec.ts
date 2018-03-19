@@ -12,10 +12,10 @@ import {
   asyncFetchErrorReducer,
   asyncFetchCompleteReducer,
   asyncFetchReducerFactory,
-  asyncSaveEntityReducerFactory,
   asyncRemoveFromCollectionReducerFactory,
   normalizedCollectionReducerFactory,
-} from './normalized';
+} from './normalized-collection.reducers';
+
 describe('reducers on normalized state', () => {
   describe('for a INormalizedCollectionState', () => {
     let initialState: INormalizedCollectionState;
@@ -281,119 +281,6 @@ describe('reducers on normalized state', () => {
 
         it('returns initialState', () => {
           expect(newState).toBe(initialState);
-        });
-      });
-
-      describe('any other action', () => {
-        const prevState: any = { hello: 'Tests' };
-
-        beforeEach(() => {
-          newState = subject(prevState, {
-            type: 'ANY',
-          });
-        });
-
-        it('returns prev state', () => {
-          expect(newState).toBe(prevState);
-        });
-      });
-    });
-
-    describe('asyncUpdateEntityReducerFactory', () => {
-      const updateActions = generateAsyncActionNames('FOO_UPDATE');
-      let subject: Reducer<INormalizedCollectionState>;
-      let newState: INormalizedCollectionState;
-
-      beforeAll(() => {
-        subject = asyncSaveEntityReducerFactory(initialState, updateActions);
-      });
-
-      describe('startAction', () => {
-        beforeEach(() => {
-          newState = subject(initialState, {
-            type: updateActions.start,
-            payload: {
-              result: '44',
-              entities: { people: { 44: { id: '44', firstname: 'Ford', lastname: 'Perfect' } } },
-            },
-          });
-        });
-
-        it('sets updating to true', () => {
-          expect(newState.updating).toBe(true);
-        });
-
-        it('sets lastState to current state', () => {
-          expect(newState.lastState).toBe(initialState);
-        });
-
-        it('sets result from payload', () => {
-          expect(newState.result).toEqual('44');
-        });
-
-        it('sets entities from payload', () => {
-          expect(newState.entities).toEqual({
-            people: { 44: { id: '44', firstname: 'Ford', lastname: 'Perfect' } },
-          });
-        });
-      });
-
-      describe('successAction', () => {
-        const prevState = { ...initialState, lastState: { result: 'TESTS' } as any };
-
-        beforeEach(() => {
-          newState = subject(prevState, {
-            type: updateActions.success,
-            payload: {
-              result: '45',
-              entities: { people: { 45: { id: '45', firstname: 'Ford', lastname: 'Perfect' } } },
-            },
-          });
-        });
-
-        it('sets loaded to true', () => {
-          expect(newState.loaded).toBe(true);
-        });
-
-        it('resets lastState', () => {
-          expect(newState.lastState).toBe(null);
-        });
-
-        it('sets result from payload', () => {
-          expect(newState.result).toBe('45');
-        });
-
-        it('sets entities from payload', () => {
-          expect(newState.entities).toEqual({
-            people: { 45: { id: '45', firstname: 'Ford', lastname: 'Perfect' } },
-          });
-        });
-      });
-
-      describe('errorAction', () => {
-        const prevState: INormalizedCollectionState = {
-          ...initialState,
-          lastState: { result: 'TESTS' } as any,
-          error: null,
-        };
-
-        beforeEach(() => {
-          newState = subject(prevState, {
-            type: updateActions.error,
-            payload: new Error('ARGH'),
-          });
-        });
-
-        it('sets lastState to state', () => {
-          expect(newState.result).toEqual('TESTS');
-        });
-
-        it('sets error', () => {
-          expect(newState.error).toBeInstanceOf(Error);
-        });
-
-        it('resets lastState', () => {
-          expect(newState.lastState).toBe(null);
         });
       });
 

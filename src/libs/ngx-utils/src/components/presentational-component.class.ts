@@ -1,4 +1,5 @@
 import { ViewModel } from '@dcs/redux-utils';
+
 export abstract class PresentationalComponent {
   public trackByIndex(index: number): number {
     return index;

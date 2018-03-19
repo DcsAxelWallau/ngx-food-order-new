@@ -8,7 +8,7 @@ import { redirectAfterUserCreateEpic } from './users/current-user/current-user.e
 import {
   loginSuccessEpic,
   redirectAfterAuthenticateEpic,
-  redirectAfterLogoutEpic,
+  redirectAndResetAfterLogoutEpic,
 } from './auth/auth.epics';
 
 export const rootEpic = combineEpics(
@@ -17,7 +17,7 @@ export const rootEpic = combineEpics(
   greetDcsEpic,
   loginSuccessEpic,
   redirectAfterAuthenticateEpic,
-  redirectAfterLogoutEpic,
+  redirectAndResetAfterLogoutEpic,
   redirectAfterUserCreateEpic,
   redirectAfterProductCreateEpic
 );

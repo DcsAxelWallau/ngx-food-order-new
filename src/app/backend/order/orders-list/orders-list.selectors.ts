@@ -16,6 +16,7 @@ export function getJoinedOrderState(
 ) {
   return {
     ...ordersState,
+    loaded: ordersState.loaded && productsListState.loaded && usersListState.loaded,
     entities: {
       ...ordersState.entities,
       ...productsListState.entities,

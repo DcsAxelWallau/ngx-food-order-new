@@ -1,9 +1,8 @@
 import { NgRedux } from '@angular-redux/store';
 import { AnyAction } from 'redux';
 
-export function dispatch(action: AnyAction): AnyAction {
+export function dispatch(action: AnyAction, store = NgRedux.instance): AnyAction {
   if (action && action.type) {
-    const store = NgRedux.instance;
     if (store) {
       return store.dispatch(action);
     }
