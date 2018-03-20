@@ -1,8 +1,7 @@
+import { NgRedux, select } from '@angular-redux/store';
 import { Component, OnInit } from '@angular/core';
-import { select, NgRedux } from '@angular-redux/store';
-import { Observable } from 'rxjs/Observable';
 import { ContainerComponent } from '@dcs/ngx-utils';
-
+import { Observable } from 'rxjs/Observable';
 import { greetWorld } from '../backend/home/home.actions';
 import { homeGreetingSelector } from '../backend/home/home.selectors';
 import { IState } from '../backend/interfaces';
