@@ -8,4 +8,5 @@ export const routes: Routes = [
   { path: 'users', loadChildren: './users/users.module#UsersModule' },
   { path: 'products', loadChildren: './products/products.module#ProductsModule' },
   { path: 'order', loadChildren: './order/order.module#OrderModule' },
+  { path: '**', loadChildren: './not-found/not-found.module#NotFoundModule' },
 ];
