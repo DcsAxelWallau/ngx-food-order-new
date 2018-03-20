@@ -16,7 +16,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --runInBand",
     "test:cleanup": "jest --clearCache",
-    "test:e2e": "protractor protractor.conf.js",
+    "test:e2e": "cross-env TS_NODE_PROJECT=config/tsconfig.e2e.json protractor protractor.conf.ts",
     "test:selenium": "webdriver-manager update && webdriver-manager start",
     "lint": "tslint --project tsconfig.json --exclude 'node_modules/**/*.ts'",
     "docs": "run-s docs:typedoc docs:compodoc",

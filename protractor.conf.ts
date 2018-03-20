@@ -1,8 +1,4 @@
-require('ts-node').register({
-  compilerOptions: {
-    module: 'commonjs'
-  }
-});
+require('ts-node/register');
 
 exports.config = {
   framework: 'jasmine',
@@ -11,19 +7,19 @@ exports.config = {
 
   multiCapabilities: [
     {
-      browserName: 'firefox'
+      browserName: 'firefox',
     },
     {
       browserName: 'chrome',
       chromeOptions: {
-        args: ['headless', 'disable-gpu']
-      }
+        args: ['headless', 'disable-gpu'],
+      },
     },
     {
       browserName: 'chrome',
       chromeOptions: {
-        args: ['window-size=400,400']
-      }
-    }
-  ]
+        args: ['window-size=400,400'],
+      },
+    },
+  ],
 };
