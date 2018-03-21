@@ -1,8 +1,2 @@
-@import './variables.scss';
-@import './mixins.scss';
+@import 'common.scss';
 @import '~bootstrap/scss/bootstrap-grid.scss';
-
-.testing-autoprefixer {
-  display: flex;
-  animation: bar 1s infinite;
-}

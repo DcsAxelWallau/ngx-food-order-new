@@ -1,38 +1,50 @@
-<h2>Users List</h2>
+<div class="row">
+  <div class="col-12">
+    <h2>Users List</h2>
+  </div>
+  <div class="col-12">
+    <div class="box" *ngIf="showData; else loader">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>E-Mail</th>
+            <th class="actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users; trackBy:trackByIdentifier">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td class="actions">
+              <a routerLink="/users/{{ user.id }}/edit"><i class="far fa-pencil">FA PENCIL</i></a>&nbsp;
+              <a role="button" (click)="removeUser(user)"><i class="far fa-times">FA TIMES</i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-12">
 
-<table *ngIf="showData; else loader">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>E-Mail</th>
-      <th>&nbsp;</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let user of users; trackBy:trackByIdentifier">
-      <td>{{ user.name }}</td>
-      <td>{{ user.email }}</td>
-      <td>
-        <a routerLink="/users/{{ user.id }}/edit">edit</a>&nbsp;
-        <a role="button" (click)="removeUser(user)">delete</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <ng-template #loader>
+      <div>loading...</div>
+    </ng-template>
 
-<ng-template #loader>
-  <div>loading...</div>
-</ng-template>
+    <div class="updating" *ngIf="updating">
+      Deleting user ...
+    </div>
 
-<div class="updating" *ngIf="updating">
-  Deleting user ...
+    <div class="error" *ngIf="error">
+      <p>Error!</p>
+      <p>Status: {{ error.status }}</p>
+      <p>Message: {{ error.message }}</p>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="button-container">
+      <a routerLink="/users/new" class="btn">Create User</a>
+    </div>
+  </div>
 </div>
 
-<div class="error" *ngIf="error">
-  <p>Error!</p>
-  <p>Status: {{ error.status }}</p>
-  <p>Message: {{ error.message }}</p>
-</div>
-
-
-<a routerLink="/users/new">Create User</a>

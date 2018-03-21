@@ -1,46 +1,64 @@
-<form [formGroup]="form" (submit)="save()">
-  <div class="row">
+<div class="row">
+  <div class="col-12">
+    <h2>Headline</h2>
+  </div>
+  <div class="col-12">
+    <form [formGroup]="form" (submit)="save()" class="form box">
 
-    <div class="col">
-      <label for="input-firstname">Firstname</label>
-      <input type="text" id="input-firstname" formControlName="firstname">
-    </div>
+      <div class="box-title">Box Title</div>
 
-    <div class="col">
-      <label for="input-lastname">Lastname</label>
-      <input type="text" id="input-lastname" formControlName="lastname">
-    </div>
-
-    <div class="col">
-      <label for="input-email">E-Mail</label>
-      <input type="text" id="input-email" formControlName="email">
-    </div>
-
-    <div [formGroup]="form.get('planet')">
-      <div class="col">
-        <label for="input-planet-name">Planet</label>
-        <input type="text" id="input-planet-name" formControlName="name">
+      <div class="row form-group">
+        <div class="col-md-6">
+          <label for="input-firstname">Firstname</label>
+          <input type="text" id="input-firstname" formControlName="firstname" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label for="input-lastname">Lastname</label>
+          <input type="text" id="input-lastname" formControlName="lastname" class="form-control">
+        </div>
       </div>
-    </div>
 
-    <div class="col">
-      <button type="submit" [disabled]="form.invalid">Save User</button>
+      <div class="row form-group">
+        <div class="col-md-9">
+          <label for="input-email">E-Mail</label>
+          <input type="text" id="input-email" formControlName="email" class="form-control">
+        </div>
+        <div class="col-md-3">
+          <div [formGroup]="form.get('planet')">
+            <label for="input-planet-name">Planet</label>
+            <input type="text" id="input-planet-name" formControlName="name" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="button-container text-right">
+        <button type="submit" [disabled]="form.invalid">Save User</button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="col-12">
+    <div class="error box" *ngIf="error">
+      <div class="box-title">Error!</div>
+      <p>Status: {{ error.status }}</p>
+      <p>Message: {{ error.message }}</p>
     </div>
   </div>
-</form>
 
-<div class="error" *ngIf="error">
-  <p>Error!</p>
-  <p>Status: {{ error.status }}</p>
-  <p>Message: {{ error.message }}</p>
+  <div class="col-12">
+    <div class="updating" *ngIf="updating">
+      Saving data ...
+    </div>
+    <div class="loading" *ngIf="loading">
+      Loading ...
+    </div>
+  </div>
+
+  <div class="col-1 text-right">
+    <div class="button-container">
+      <a routerLink="/users" class="btn btn-white"><< Back</a>
+    </div>
+  </div>
+
 </div>
-
-<div class="updating" *ngIf="updating">
-  Saving data ...
-</div>
-
-<div class="loading" *ngIf="loading">
-  Loading ...
-</div>
-
-<a routerLink="/users">back</a>

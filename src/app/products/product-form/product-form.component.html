@@ -1,39 +1,57 @@
-<form [formGroup]="form" (submit)="save()">
-  <div class="row">
+<div class="row">
+  <div class="col-12">
+    <h2>Headline</h2>
+  </div>
+  <div class="col-12">
+    <form [formGroup]="form" (submit)="save()" class="form box">
 
-    <div class="col">
-      <label for="input-articleId">Article Number</label>
-      <input type="text" id="input-articleId" formControlName="articleId">
-    </div>
+      <div class="row form-group">
+        <div class="col-md-3">
+          <label for="input-articleId">Article Number</label>
+          <input type="text" id="input-articleId" formControlName="articleId" class="form-control">
+        </div>
+        <div class="col-md-9">
+          <label for="input-label">Label</label>
+          <input type="text" id="input-label" formControlName="label" class="form-control">
+        </div>
+      </div>
 
-    <div class="col">
-      <label for="input-label">Label</label>
-      <input type="text" id="input-label" formControlName="label">
-    </div>
+      <div class="row form-group">
+        <div class="col-md-2">
+          <label for="input-price">Price</label>
+          <input type="number" min="0" step="0.05" id="input-price" formControlName="price">
+        </div>
+      </div>
 
-    <div class="col">
-      <label for="input-price">Price</label>
-      <input type="number" min="0" step="0.05" id="input-price" formControlName="price">
-    </div>
+      <div class="button-containe text-right">
+        <button type="submit" [disabled]="form.invalid">Save Product</button>
+      </div>
 
-    <div class="col">
-      <button type="submit" [disabled]="form.invalid">Save Product</button>
+    </form>
+  </div>
+
+  <div class="col-12">
+    <div class="error box" *ngIf="error">
+      <p>Error!</p>
+      <p>Status: {{ error.status }}</p>
+      <p>Message: {{ error.message }}</p>
     </div>
   </div>
-</form>
 
-<div class="error" *ngIf="error">
-  <p>Error!</p>
-  <p>Status: {{ error.status }}</p>
-  <p>Message: {{ error.message }}</p>
+  <div class="col-12">
+    <div class="updating" *ngIf="updating">
+      Saving data ...
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      Loading ...
+    </div>
+  </div>
+
+  <div class="col-1 text-right">
+    <div class="button-container">
+      <a routerLink="/products" class="btn btn-white"><< Back</a>
+    </div>
+  </div>
+
 </div>
-
-<div class="updating" *ngIf="updating">
-  Saving data ...
-</div>
-
-<div class="loading" *ngIf="loading">
-  Loading ...
-</div>
-
-<a routerLink="/products">back</a>

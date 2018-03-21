@@ -1,0 +1,14 @@
+@import '../../../styles/common';
+
+.table {
+  a {
+    &,
+    &:visited {
+      color: $blue-light;
+    }
+    &:hover {
+      cursor: pointer;
+      color: $blue;
+    }
+  }
+}
