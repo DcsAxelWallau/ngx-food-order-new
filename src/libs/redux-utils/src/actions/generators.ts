@@ -21,8 +21,7 @@ export interface IAsyncActionNames {
  * ```
  *
  * @export
- * @param {string} baseName
- * @returns {IAsyncActionNames}
+ * @param baseName
  */
 export function generateAsyncActionNames(baseName: string): IAsyncActionNames {
   return {

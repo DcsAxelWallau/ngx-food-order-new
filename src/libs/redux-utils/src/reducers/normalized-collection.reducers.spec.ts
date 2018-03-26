@@ -1,6 +1,6 @@
-import { generateAsyncActionNames } from '@dcs/redux-utils';
 import { Reducer } from 'redux';
 import { INormalizedCollectionState } from './../selectors/interfaces';
+import { generateAsyncActionNames } from '../actions/generators';
 import {
   generateNormalizedState,
   pushIntoResult,

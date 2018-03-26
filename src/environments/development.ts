@@ -65,7 +65,7 @@ export default class DevelopmentEnvironment extends Environment {
 
   constructor(devTools?: DevToolsExtension) {
     super();
-    if (devTools) {
+    if (devTools && devTools.isEnabled()) {
       this.additionalEnhancers = [...this.additionalEnhancers, devTools.enhancer()];
     }
 

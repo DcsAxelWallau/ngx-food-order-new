@@ -1,8 +1,11 @@
-import { __, compose, curry } from 'ramda';
+import { __, compose, CurriedFunction2, CurriedFunction3, curry } from 'ramda';
 import { AnyAction } from 'redux';
 import { IAsyncActionNames } from './../actions/generators';
 import { INormalizedEntityState, INormalizedState } from './../selectors/interfaces';
 import { asyncFetchReducerFactory } from './normalized-collection.reducers';
+
+// ARGH Typescript
+export { CurriedFunction2, CurriedFunction3 };
 
 export function asyncSaveEntityReducerFactory<S extends INormalizedState>(
   initialState: S,

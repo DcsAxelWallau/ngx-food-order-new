@@ -12,7 +12,12 @@ import {
   uniq,
   view,
   mergeDeepRight,
+  CurriedFunction2,
+  CurriedFunction3,
 } from 'ramda';
+
+// ARGH Typescript
+export { CurriedFunction2, CurriedFunction3 };
 
 export const generateNormalizedState = (): INormalizedState => {
   return {
