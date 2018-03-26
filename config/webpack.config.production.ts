@@ -40,7 +40,7 @@ function buildProductionConfig() {
             compress: {
               // conditionals because of @angular/core/http bug
               conditionals: false,
-              passes: 3,
+              // passes: 3,
             },
             ecma: 8,
           },

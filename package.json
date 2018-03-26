@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "webpack --config config/webpack.config.production.ts",
     "build":
-      "cross-env TS_NODE_PROJECT=config/tsconfig.node.json run-s lint test:coverage compile docs",
+      "cross-env TS_NODE_PROJECT=config/tsconfig.node.json run-s lint test:coverage compile docs:compodoc",
     "build:production": "cross-env APP_ENV=production npm run build",
     "build:staging": "cross-env APP_ENV=staging npm run build",
     "watch":
