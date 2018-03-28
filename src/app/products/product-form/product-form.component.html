@@ -4,6 +4,9 @@
   </div>
   <div class="col-12">
     <form [formGroup]="form" (submit)="save()" class="form box">
+      <div class="box-title">
+        {{ product.label }}
+      </div>
 
       <div class="row form-group">
         <div class="col-md-3">
@@ -31,21 +34,16 @@
   </div>
 
   <div class="col-12">
-    <div class="error box" *ngIf="error">
-      <p>Error!</p>
-      <p>Status: {{ error.status }}</p>
-      <p>Message: {{ error.message }}</p>
-    </div>
+    <dcs-error-box [error]="error"></dcs-error-box>
   </div>
 
   <div class="col-12">
-    <div class="updating" *ngIf="updating">
-      Saving data ...
-    </div>
-
-    <div class="loading" *ngIf="loading">
-      Loading ...
-    </div>
+    <dcs-loading-indicator
+            [loading]="loading"
+            loadingMessage="Loading..."
+            [updating]="updating"
+            updatingMessage="Saving...">
+    </dcs-loading-indicator>
   </div>
 
   <div class="col-1 text-right">

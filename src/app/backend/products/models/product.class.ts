@@ -11,7 +11,7 @@ export class Product extends ViewModel<IProduct> {
   protected static readonly defaults = {
     articleId: '',
     id: '',
-    label: '',
+    label: 'New Product',
     price: 0,
   };
 

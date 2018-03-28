@@ -57,6 +57,11 @@ input[type='submit'],
     td {
       border-bottom: 1px solid $border-color;
     }
+    tr:first-child {
+      td {
+        padding-top: 1rem;
+      }
+    }
     tr:last-child td {
       border-bottom: 0;
     }

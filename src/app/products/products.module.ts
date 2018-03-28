@@ -7,6 +7,7 @@ import { ProductFormComponent } from './product-form/product-form.component';
 import { ProductNewPageComponent } from './product-new/product-new-page.compponent';
 import { ProductsListPageComponent } from './products-list/products-list-page.component';
 import { ProductsListComponent } from './products-list/products-list.component';
+import { ComponentsModule } from '../components/components.module';
 
 export const routes: Routes = [
   { path: '', component: ProductsListPageComponent },
@@ -22,6 +23,6 @@ export const routes: Routes = [
     ProductEditPageComponent,
     ProductFormComponent,
   ],
-  imports: [RouterModule.forChild(routes), CommonModule, ReactiveFormsModule],
+  imports: [RouterModule.forChild(routes), CommonModule, ReactiveFormsModule, ComponentsModule],
 })
 export class ProductsModule {}

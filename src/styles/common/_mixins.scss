@@ -45,6 +45,7 @@
   margin-bottom: $default-margin;
   background-color: white;
   .box-title {
+    font-weight: bold;
     &:after {
       content: '\0020';
       display: block;
@@ -52,12 +53,9 @@
       height: 0.5rem;
       margin-left: -0.5rem;
       margin-top: 0.5rem;
+      margin-bottom: 1rem;
       background: white linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 60%);
       border-top: 1px solid $border-color;
     }
-  }
-  &.error {
-    border: 2px solid $red;
-    color: $red;
   }
 }

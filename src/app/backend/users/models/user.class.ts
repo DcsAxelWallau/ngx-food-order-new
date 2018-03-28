@@ -26,11 +26,15 @@ export class User extends ViewModel<IUser> {
   private planetInstance: Planet;
 
   get name(): string {
-    return `${this.firstname} ${this.lastname}`;
+    return this.persisted ? `${this.firstname} ${this.lastname}` : 'New User';
   }
 
   get planet() {
     return this.getInstance('planet', Planet);
+  }
+
+  get persisted(): boolean {
+    return !isNaN(parseInt(this.id, 0));
   }
 
   constructor(props: Partial<IUser>) {

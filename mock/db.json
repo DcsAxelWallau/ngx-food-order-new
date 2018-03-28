@@ -33,6 +33,11 @@
           "productId": "3",
           "userId": "2",
           "numberOfProducts": 4
+        },
+        {
+          "productId": "3",
+          "userId": "",
+          "numberOfProducts": 0
         }
       ]
     },
@@ -67,6 +72,33 @@
           "numberOfProducts": 4
         }
       ]
+    },
+    {
+      "id": 4,
+      "completed": true,
+      "items": [
+        {
+          "productId": "2",
+          "userId": "2",
+          "numberOfProducts": 0
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "completed": true,
+      "items": [
+        {
+          "productId": "2",
+          "userId": "2",
+          "numberOfProducts": 2
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "completed": false,
+      "items": []
     }
   ],
   "products": [

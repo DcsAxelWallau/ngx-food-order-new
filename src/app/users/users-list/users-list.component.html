@@ -3,7 +3,7 @@
     <h2>Users List</h2>
   </div>
   <div class="col-12">
-    <div class="box" *ngIf="showData; else loader">
+    <div class="box" *ngIf="showData">
       <table class="table">
         <thead>
           <tr>
@@ -27,19 +27,15 @@
   </div>
   <div class="col-12">
 
-    <ng-template #loader>
-      <div>loading...</div>
-    </ng-template>
+    <dcs-loading-indicator
+            [loading]="!showData"
+            loadingMessage="Loading..."
+            [updating]="updating"
+            updatingMessage=" Deleting user ...">
+    </dcs-loading-indicator>
 
-    <div class="updating" *ngIf="updating">
-      Deleting user ...
-    </div>
+    <dcs-error-box [error]="error"></dcs-error-box>
 
-    <div class="error" *ngIf="error">
-      <p>Error!</p>
-      <p>Status: {{ error.status }}</p>
-      <p>Message: {{ error.message }}</p>
-    </div>
   </div>
   <div class="col-12">
     <div class="button-container">

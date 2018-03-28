@@ -3,7 +3,7 @@
     <h2>Products List</h2>
   </div>
   <div class="col-12">
-    <div class="box" *ngIf="showData; else loader">
+    <div class="box" *ngIf="showData">
       <table class="table">
         <thead>
           <tr>
@@ -29,21 +29,12 @@
   </div>
 
   <div class="col-12">
-    <div class="box error" *ngIf="error">
-      <p>Error!</p>
-      <p>Status: {{ error.status }}</p>
-      <p>Message: {{ error.message }}</p>
-    </div>
+    <dcs-error-box [error]="error"></dcs-error-box>
   </div>
 
   <div class="col-12">
-    <ng-template #loader>
-      <div>loading...</div>
-    </ng-template>
-
-    <div class="updating" *ngIf="updating">
-      Deleting product ...
-    </div>
+    <dcs-loading-indicator [loading]="!showData" [updating]="updating">
+    </dcs-loading-indicator>
   </div>
 
   <div class="col-12">

@@ -23,13 +23,15 @@
 }
 
 input,
-textarea {
+textarea,
+select {
   @include default-transition;
   -moz-appearance: none;
   -webkit-appearance: none;
   -ms-appearance: none;
   appearance: none;
   border: 1px solid transparent;
+  border-radius: 0;
   border-bottom-color: $border-color;
   background-color: $gray-lightest;
   font-family: $default-font;
